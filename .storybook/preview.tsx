@@ -1,9 +1,10 @@
 /// <reference types="vite/client" />
 
-
 import type { Preview } from '@storybook/react-vite'
-import '../src/index.css'
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport'
+
+import '../src/index.css'
+
 
 const preview: Preview = {
   globalTypes: {
