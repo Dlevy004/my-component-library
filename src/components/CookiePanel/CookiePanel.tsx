@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
 import { Cookie } from 'lucide-react'
 
 export interface CookiePanelProps {
@@ -18,6 +18,8 @@ export interface CookiePanelProps {
   readonly cookieName?: string
   /** Lifetime of the "accepted" decision in days */
   readonly maxAgeDays?: number
+  /** Lifetime of the "rejected" decision in days (shorter, so the visitor is asked again sooner) */
+  readonly rejectMaxAgeDays?: number
   /** Accent color (icon, link, buttons) */
   readonly accentColor?: string
   /** Accent color used in dark mode. Pick a color with at least 4.5:1 contrast on the panel background */
@@ -26,6 +28,36 @@ export interface CookiePanelProps {
   readonly onAccept?: () => void
   /** Called when the user rejects */
   readonly onReject?: () => void
+}
+
+type Consent = 'accepted' | 'rejected' | null
+
+const listeners = new Set<() => void>()
+
+function subscribe(callback: () => void) {
+  listeners.add(callback)
+  return () => {
+    listeners.delete(callback)
+  }
+}
+
+function notify() {
+  listeners.forEach((l) => l())
+}
+
+function readConsent(cookieName: string): Consent {
+  const prefix = `${cookieName}=`
+  const entry = document.cookie
+    .split(';')
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(prefix))
+  const value = entry?.slice(prefix.length)
+  return value === 'accepted' || value === 'rejected' ? value : null
+}
+
+function writeConsent(cookieName: string, value: Exclude<Consent, null>, days: number) {
+  document.cookie = `${cookieName}=${value}; max-age=${60 * 60 * 24 * days}; path=/; SameSite=Lax`
+  notify()
 }
 
 export function CookiePanel({
@@ -37,28 +69,40 @@ export function CookiePanel({
   rejectLabel = 'Reject',
   cookieName = 'cookie_consent',
   maxAgeDays = 30,
+  rejectMaxAgeDays = 7,
   accentColor = '#2563eb',
   accentColorDark = '#60a5fa',
   onAccept,
   onReject,
 }: CookiePanelProps) {
-  const [isVisible, setIsVisible] = useState(false)
+  const consent = useSyncExternalStore(
+    subscribe,
+    () => readConsent(cookieName),
+    () => 'rejected' as Consent, // server snapshot: keep the panel hidden during SSR
+  )
 
+  // The slide-up animation needs one frame with the panel hidden before showing it
+  const [mounted, setMounted] = useState(false)
   useEffect(() => {
-    const hasConsent = document.cookie
-      .split(';')
-      .some((c) => c.trim().startsWith(cookieName))
-    if (!hasConsent) setIsVisible(true)
-  }, [cookieName])
+    const id = requestAnimationFrame(() => setMounted(true))
+    return () => cancelAnimationFrame(id)
+  }, [])
 
-  const handleAccept = () => {
-    document.cookie = `${cookieName}=accepted; max-age=${60 * 60 * 24 * maxAgeDays}; path=/`
-    setIsVisible(false)
-    onAccept?.()
-  }
+  const isVisible = mounted && consent === null
+
+  // Return visit with a stored acceptance: let the host know (e.g. to load analytics)
+  const onAcceptRef = useRef(onAccept)
+  useEffect(() => {
+    onAcceptRef.current = onAccept
+  })
+  useEffect(() => {
+    if (consent === 'accepted') onAcceptRef.current?.()
+  }, [consent])
+
+  const handleAccept = () => writeConsent(cookieName, 'accepted', maxAgeDays)
 
   const handleReject = () => {
-    setIsVisible(false)
+    writeConsent(cookieName, 'rejected', rejectMaxAgeDays)
     onReject?.()
   }
 

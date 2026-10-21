@@ -94,3 +94,22 @@ export const AcceptHidesPanel: Story = {
     )
   },
 }
+
+export const RejectIsRemembered: Story = {
+  tags: ['!dev', '!autodocs'],
+  play: async ({ canvas, userEvent, args }) => {
+    await userEvent.click(await canvas.findByRole('button', { name: 'Reject' }))
+    await expect(args.onReject).toHaveBeenCalledOnce()
+    await expect(document.cookie).toContain('cookie_consent=rejected')
+  },
+}
+
+export const StoredAcceptanceNotifiesHost: Story = {
+  tags: ['!dev', '!autodocs'],
+  beforeEach: () => {
+    document.cookie = 'cookie_consent=accepted; max-age=3600; path=/'
+  },
+  play: async ({ args }) => {
+    await waitFor(() => expect(args.onAccept).toHaveBeenCalledOnce())
+  },
+}
