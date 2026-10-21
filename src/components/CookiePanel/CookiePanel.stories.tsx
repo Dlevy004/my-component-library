@@ -28,7 +28,10 @@ const meta = {
       ),
   ],
   args: { onAccept: fn(), onReject: fn() },
-  argTypes: { accentColor: { control: 'color' } },
+  argTypes: {
+    accentColor: { control: 'color' },
+    accentColorDark: { control: 'color' },
+  },
   beforeEach: () => {
     document.cookie = 'cookie_consent=; max-age=0; path=/'
   },

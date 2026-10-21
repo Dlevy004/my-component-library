@@ -16,11 +16,13 @@ export interface CookiePanelProps {
   readonly rejectLabel?: string
   /** Name of the cookie that stores the decision */
   readonly cookieName?: string
-  /** Cookie lifetime in days */
+  /** Lifetime of the "accepted" decision in days */
   readonly maxAgeDays?: number
   /** Accent color (icon, link, buttons) */
   readonly accentColor?: string
-  /** Called when the user accepts, e.g. to load an analytics script */
+  /** Accent color used in dark mode. Pick a color with at least 4.5:1 contrast on the panel background */
+  readonly accentColorDark?: string
+  /** Called when the user accepts, and on return visits when a stored acceptance is found */
   readonly onAccept?: () => void
   /** Called when the user rejects */
   readonly onReject?: () => void
@@ -36,6 +38,7 @@ export function CookiePanel({
   cookieName = 'cookie_consent',
   maxAgeDays = 30,
   accentColor = '#2563eb',
+  accentColorDark = '#60a5fa',
   onAccept,
   onReject,
 }: CookiePanelProps) {
@@ -61,16 +64,21 @@ export function CookiePanel({
 
   return (
     <dialog
-        open
-        inert={!isVisible}
-        aria-hidden={!isVisible}
-        aria-labelledby="cookie-title"
-        style={{ '--cookie-accent': accentColor } as CSSProperties}
-        className={`fixed bottom-5 left-1/2 z-100 m-0 flex w-[min(90%,600px)] -translate-x-1/2 flex-col items-center gap-4 rounded-2xl border-none bg-neutral-100 px-4 py-4 font-medium text-black shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-[translate,visibility] duration-400 ease-in-out motion-reduce:transition-none sm:px-6 dark:bg-neutral-800 dark:text-neutral-100 ${
-            isVisible ? 'visible translate-y-0' : 'invisible translate-y-[150%]'
-        }`}
+      open
+      inert={!isVisible}
+      aria-hidden={!isVisible}
+      aria-labelledby="cookie-title"
+      style={
+        {
+          '--cookie-accent': accentColor,
+          '--cookie-accent-dark': accentColorDark,
+        } as CSSProperties
+      }
+      className={`fixed bottom-5 left-1/2 z-100 m-0 flex w-[min(90%,600px)] -translate-x-1/2 flex-col items-center gap-4 rounded-2xl border-none bg-neutral-100 px-4 py-4 font-medium text-black shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-[translate,visibility] duration-400 ease-in-out motion-reduce:transition-none sm:px-6 dark:bg-neutral-800 dark:text-neutral-100 ${
+        isVisible ? 'visible translate-y-0' : 'invisible translate-y-[150%]'
+      }`}
     >
-      <header className="flex w-full items-center justify-center gap-2 whitespace-nowrap text-(--cookie-accent)">
+      <header className="flex w-full items-center justify-center gap-2 whitespace-nowrap text-(--cookie-accent) dark:text-(--cookie-accent-dark)">
         <Cookie className="h-auto w-10 sm:w-12" aria-hidden="true" />
         <h2 id="cookie-title" className="text-2xl font-bold">
           {title}
@@ -79,7 +87,7 @@ export function CookiePanel({
 
       <p className="w-full text-left leading-tight">
         {description}&nbsp;
-        <a href={privacyHref} className="text-(--cookie-accent) hover:underline">
+        <a href={privacyHref} className="text-(--cookie-accent) hover:underline dark:text-(--cookie-accent-dark)">
           {privacyLabel}
         </a>
       </p>
@@ -95,7 +103,7 @@ export function CookiePanel({
         <button
           type="button"
           onClick={handleReject}
-          className="flex-1 cursor-pointer rounded-[10px] border-[3px] border-(--cookie-accent) bg-transparent p-2 font-bold text-(--cookie-accent) transition hover:scale-105 sm:p-3"
+          className="flex-1 cursor-pointer rounded-[10px] border-[3px] border-(--cookie-accent) bg-transparent p-2 font-bold text-(--cookie-accent) transition hover:scale-105 sm:p-3 dark:border-(--cookie-accent-dark) dark:text-(--cookie-accent-dark)"
         >
           {rejectLabel}
         </button>
