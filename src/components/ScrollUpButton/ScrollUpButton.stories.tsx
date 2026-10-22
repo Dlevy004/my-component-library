@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, waitFor } from "storybook/test";
+import { expect, spyOn, waitFor } from "storybook/test";
 import { ScrollUpButton } from "./ScrollUpButton";
 import componentSource from "./ScrollUpButton.tsx?raw";
 
@@ -60,5 +60,34 @@ export const ScrollsToTop: Story = {
 		const button = await canvas.findByRole("button", { name: "Scroll to top" });
 		await userEvent.click(button);
 		await waitFor(() => expect(window.scrollY).toBe(0), { timeout: 3000 });
+	},
+};
+
+export const ReducedMotion: Story = {
+	tags: ["!dev", "!autodocs"],
+	beforeEach: () => {
+		const originalMatchMedia = window.matchMedia;
+		window.matchMedia = ((query: string) =>
+			({
+				matches: query.includes("prefers-reduced-motion"),
+				media: query,
+			}) as MediaQueryList) as typeof window.matchMedia;
+
+		// cleanup: runs after the story, even if the test fails
+		return () => {
+			window.matchMedia = originalMatchMedia;
+		};
+	},
+	play: async ({ canvas, userEvent }) => {
+		window.scrollTo({ top: 800 });
+		const button = await canvas.findByRole("button", { name: "Scroll to top" });
+
+		const scrollSpy = spyOn(window, "scrollTo");
+		try {
+			await userEvent.click(button);
+			await expect(scrollSpy).toHaveBeenCalledWith({ top: 0, behavior: "auto" });
+		} finally {
+			scrollSpy.mockRestore();
+		}
 	},
 };
