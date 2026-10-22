@@ -11,9 +11,6 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.3(vite@8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0))
-      lucide-react:
-        specifier: ^1.59.0
-        version: 1.59.0(@types/react@19.3.0)(react@19.3.1)
       react:
         specifier: ^19.2.8
         version: 19.3.1
@@ -31,19 +28,19 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.13.0(jiti@2.7.0))
       '@storybook/addon-a11y':
-        specifier: 10.6.2
+        specifier: ^10.6.2
         version: 10.6.2(storybook@10.6.2(@types/react@19.3.0)(react@19.3.1))
       '@storybook/addon-docs':
-        specifier: 10.6.2
+        specifier: ^10.6.2
         version: 10.6.2(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(storybook@10.6.2(@types/react@19.3.0)(react@19.3.1))
       '@storybook/addon-mcp':
-        specifier: 10.6.2
+        specifier: ^10.6.2
         version: 10.6.2(@storybook/addon-vitest@10.6.2(@vitest/browser-playwright@5.0.5)(@vitest/browser@5.0.5)(react@19.3.1)(storybook@10.6.2(@types/react@19.3.0)(react@19.3.1))(vitest@5.0.5))(storybook@10.6.2(@types/react@19.3.0)(react@19.3.1))(typescript@6.0.3)
       '@storybook/addon-vitest':
-        specifier: 10.6.2
+        specifier: ^10.6.2
         version: 10.6.2(@vitest/browser-playwright@5.0.5)(@vitest/browser@5.0.5)(react@19.3.1)(storybook@10.6.2(@types/react@19.3.0)(react@19.3.1))(vitest@5.0.5)
       '@storybook/react-vite':
-        specifier: 10.6.2
+        specifier: ^10.6.2
         version: 10.6.2(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(storybook@10.6.2(@types/react@19.3.0)(react@19.3.1))(typescript@6.0.3)(vite@8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0))
       '@types/node':
         specifier: ^24.13.3
@@ -58,10 +55,10 @@ importers:
         specifier: ^6.1.1
         version: 6.1.2(vite@8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0))
       '@vitest/browser-playwright':
-        specifier: ^5.0.5
+        specifier: latest
         version: 5.0.5(playwright@1.64.1)(vite@8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0))(vitest@5.0.5)
       '@vitest/coverage-v8':
-        specifier: ^5.0.5
+        specifier: latest
         version: 5.0.5(@vitest/browser@5.0.5)(vitest@5.0.5)
       eslint:
         specifier: ^10.10.0
@@ -73,16 +70,16 @@ importers:
         specifier: ^0.5.6
         version: 0.5.7(eslint@10.13.0(jiti@2.7.0))
       eslint-plugin-storybook:
-        specifier: 10.6.2
+        specifier: ^10.6.2
         version: 10.6.2(eslint@10.13.0(jiti@2.7.0))(typescript@6.0.3)
       globals:
         specifier: ^17.12.0
         version: 17.13.0
       playwright:
-        specifier: ^1.64.1
+        specifier: latest
         version: 1.64.1
       storybook:
-        specifier: 10.6.2
+        specifier: ^10.6.2
         version: 10.6.2(@types/react@19.3.0)(react@19.3.1)
       typescript:
         specifier: ~6.0.2
@@ -94,7 +91,7 @@ importers:
         specifier: ^8.3.0
         version: 8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)
       vitest:
-        specifier: ^5.0.5
+        specifier: latest
         version: 5.0.5(@types/node@24.19.2)(@vitest/browser-playwright@5.0.5)(@vitest/coverage-v8@5.0.5)(@vitest/ui@5.0.5)(vite@8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0))
 
 packages:
@@ -1850,15 +1847,6 @@ packages:
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
-
-  lucide-react@1.59.0:
-    resolution: {integrity: sha512-5qgMyyCPU6OvnKpLS2t693+ZtiqA8oaSweWoUows0BLFKFf6V75m4+CptpmohZHpD5IuOVIBXHBBiv2vpLJmtw==}
-    peerDependencies:
-      '@types/react': '*'
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -3887,12 +3875,6 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
-
-  lucide-react@1.59.0(@types/react@19.3.0)(react@19.3.1):
-    dependencies:
-      react: 19.3.1
-    optionalDependencies:
-      '@types/react': 19.3.0
 
   lz-string@1.5.0: {}
 
