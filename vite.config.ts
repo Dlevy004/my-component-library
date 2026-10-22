@@ -14,6 +14,12 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   test: {
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'],
+      include: ['src/components/**/*.{ts,tsx}'],
+      exclude: ['**/*.stories.*', '**/index.ts'],
+    },
     projects: [{
       extends: true,
       plugins: [
