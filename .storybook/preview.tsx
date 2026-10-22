@@ -35,7 +35,7 @@ const preview: Preview = {
     ],
     parameters: {
         options: {
-            storySort: { order: ['Introduction', 'Components'] },
+            storySort: { order: ["Introduction", "Components", ["Feedback", "Navigation"]] },
         },
         controls: {
             matchers: {
