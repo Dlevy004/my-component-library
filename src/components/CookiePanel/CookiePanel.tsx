@@ -1,12 +1,6 @@
 "use client";
 
-import {
-	useEffect,
-	useRef,
-	useState,
-	useSyncExternalStore,
-	type CSSProperties,
-} from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
 import { Cookie } from "lucide-react";
 
 export interface CookiePanelProps {
@@ -64,10 +58,10 @@ function readConsent(cookieName: string): Consent {
 }
 
 function writeConsent(
-	cookieName: string,
-	value: Exclude<Consent, null>,
-	days: number,
-) {
+    cookieName: string,
+    value: Exclude<Consent, null>,
+    days: number)
+{
 	document.cookie = `${cookieName}=${value}; max-age=${60 * 60 * 24 * days}; path=/; SameSite=Lax`;
 	notify();
 }
@@ -90,7 +84,7 @@ export function CookiePanel({
 	const consent = useSyncExternalStore(
 		subscribe,
 		() => readConsent(cookieName),
-		() => "rejected" as Consent, // server snapshot: keep the panel hidden during SSR
+		() => "rejected" as Consent,
 	);
 
 	// The slide-up animation needs one frame with the panel hidden before showing it
@@ -125,16 +119,16 @@ export function CookiePanel({
 			aria-hidden={!isVisible}
 			aria-labelledby="cookie-title"
 			style={
-				{
-					"--cookie-accent": accentColor,
-					"--cookie-accent-dark": accentColorDark,
-				} as CSSProperties
+				{"--cookie-accent": accentColor, "--cookie-accent-dark": accentColorDark} as CSSProperties
 			}
-			className={`fixed bottom-5 left-1/2 z-100 m-0 flex w-[min(90%,600px)] -translate-x-1/2 flex-col items-center gap-4 rounded-2xl border-none bg-neutral-100 px-4 py-4 font-medium text-black shadow-[0_10px_30px_rgba(0,0,0,0.15)] transition-[translate,visibility] duration-400 ease-in-out motion-reduce:transition-none sm:px-6 dark:bg-neutral-800 dark:text-neutral-100 ${
-				isVisible
-					? "visible translate-y-0"
-					: "invisible translate-y-[150%]"
-			}`}
+			className={
+                `fixed bottom-5 left-1/2 z-100 m-0 flex w-[min(90%,600px)] -translate-x-1/2
+                flex-col items-center gap-4 rounded-2xl border-none bg-neutral-100 px-4 py-4
+                font-medium text-black shadow-[0_10px_30px_rgba(0,0,0,0.15)]
+                transition-[translate,visibility] duration-400 ease-in-out motion-reduce:transition-none
+                sm:px-6 dark:bg-neutral-800 dark:text-neutral-100
+                ${isVisible ? "visible translate-y-0" : "invisible translate-y-[150%]"}`
+            }
 		>
 			<header className="flex w-full items-center justify-center gap-2 whitespace-nowrap text-(--cookie-accent) dark:text-(--cookie-accent-dark)">
 				<Cookie className="h-auto w-10 sm:w-12" aria-hidden="true" />
