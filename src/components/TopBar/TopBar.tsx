@@ -22,7 +22,7 @@ export function TopBar({
 }: TopBarProps) {
 	return (
 		<header
-			className={`z-90 grid h-[max(10dvh,60px)] grid-cols-[1fr_minmax(0,auto)_1fr] items-center gap-2 rounded-b-2xl bg-neutral-100 px-4 text-neutral-900 shadow-[0_0_33px_10px_rgba(0,0,0,0.2)] lg:px-8 dark:bg-neutral-900 dark:text-neutral-100 ${
+			className={`z-90 grid h-[max(10dvh,60px)] grid-cols-[1fr_minmax(0,auto)_1fr] items-center gap-2 rounded-b-2xl bg-neutral-100 px-4 text-neutral-900 shadow-[0_0_33px_10px_rgba(0,0,0,0.2)] lg:px-8 dark:bg-neutral-800 dark:text-neutral-100 ${
 				fixed
 					? "fixed inset-x-0 top-0 mx-auto w-[90%] lg:w-[max(60%,260px)]"
 					: "relative w-full"
