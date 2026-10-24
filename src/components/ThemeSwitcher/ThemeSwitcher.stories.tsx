@@ -10,7 +10,7 @@ const meta = {
 	parameters: {
 		layout: "centered",
 		docs: {
-			story: { inline: false, iframeHeight: 140 },
+			story: { inline: true, iframeHeight: 140 },
 			description: {
 				component:
 					"A toggle that switches between light and dark mode by adding a class to the `<html>` element and remembers the choice in `localStorage`. Requires `lucide-react` and `Tailwind CSS v4` with a class-based dark variant: `@custom-variant dark (&:where(.dark, .dark *));`.",
