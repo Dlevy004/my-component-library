@@ -42,7 +42,7 @@ export function HamburgerButton({
 					"--hamburger-accent-dark": accentColorDark,
 				} as CSSProperties
 			}
-			className={`flex size-10 cursor-pointer items-center justify-center rounded-full border-none bg-(--hamburger-accent) text-white transition hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--hamburger-accent) motion-reduce:transition-none dark:bg-(--hamburger-accent-dark) dark:text-neutral-900 dark:focus-visible:outline-(--hamburger-accent-dark) ${className}`}
+			className={`flex size-10 cursor-pointer items-center justify-center rounded-full border-none bg-(--hamburger-accent) text-white transition hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--hamburger-accent) motion-reduce:transition-none dark:bg-(--hamburger-accent-dark) dark:focus-visible:outline-(--hamburger-accent-dark) ${className}`}
 		>
 			<Menu aria-hidden="true" strokeWidth={2.5} className="size-[70%]" />
 		</button>
