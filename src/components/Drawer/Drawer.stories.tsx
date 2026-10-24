@@ -56,15 +56,15 @@ function DrawerDemo({
 
 	return (
 		<>
-			<div className="grid h-dvh place-items-center">
-				<button
-					type="button"
-					onClick={() => setOpen(true)}
-					className="rounded-lg bg-blue-700 px-4 py-2 font-semibold text-white"
-				>
-					{buttonLabel}
-				</button>
-			</div>
+            <div className="flex justify-center p-6">
+                <button
+                    type="button"
+                    onClick={() => setOpen(true)}
+                    className="rounded-lg bg-blue-700 px-4 py-2 font-semibold text-white"
+                >
+                    {buttonLabel}
+                </button>
+            </div>
 			<Drawer
 				{...args}
 				open={open}
@@ -110,10 +110,9 @@ const meta = {
 	component: Drawer,
 	tags: ["autodocs"],
 	parameters: {
-		layout: "fullscreen",
+		layout: "centered",
 		docs: {
 			page: DocsPage,
-			story: { inline: true, iframeHeight: 360 },
 			description: { component: description },
 			source: {
 				// show usage of <Drawer>, not of the demo wrapper
