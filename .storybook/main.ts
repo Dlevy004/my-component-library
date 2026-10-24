@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-vite';
+import { fileURLToPath } from "node:url";
 
 const config: StorybookConfig = {
     "stories": [
@@ -12,6 +13,17 @@ const config: StorybookConfig = {
         "@storybook/addon-docs",
         "@storybook/addon-mcp"
     ],
-    "framework": "@storybook/react-vite"
+    "framework": "@storybook/react-vite",
+
+    viteFinal: (viteConfig) => {
+		viteConfig.resolve ??= {};
+		viteConfig.resolve.alias = {
+			...viteConfig.resolve.alias,
+			"vite-react-ssg": fileURLToPath(
+				new URL("./vite-react-ssg.mock.tsx", import.meta.url),
+			),
+		};
+		return viteConfig;
+	},
 };
 export default config;
