@@ -2,18 +2,61 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, waitFor } from "storybook/test";
 import { CookiePanel } from "./CookiePanel";
 import componentSource from "./CookiePanel.tsx?raw";
+import { Canvas, Controls, Description, Stories, Title } from "@storybook/addon-docs/blocks";
+
+const description = [
+	"A cookie consent dialog. It stores the visitor's choice in a cookie and calls `onAccept` / `onReject`, so your app decides what to load (e.g. analytics).",
+	"",
+	"**Requirements**",
+	"- React 18+, `pnpm add lucide-react`, Tailwind CSS v4 with a class-based dark variant (`@custom-variant dark (&:where(.dark, .dark *));`)",
+	"",
+	"**Good to know**",
+	"- The choice is stored in the `cookie_consent` cookie (`cookieName`): acceptance for 30 days (`maxAgeDays`), rejection for 7 days (`rejectMaxAgeDays`). After that the visitor is asked again.",
+	"- `onAccept` is also called on return visits when a stored acceptance is found, so load your analytics there.",
+	"- The panel is hidden during server rendering and slides up after mount, so there is no hydration mismatch.",
+	"- Pick accent colors with at least 4.5:1 contrast on the panel background (`accentColor` for light, `accentColorDark` for dark mode).",
+	"- The examples on this page share one cookie: accepting or rejecting in one hides all of them. Reload the page to see them again.",
+].join("\n");
+
+const usageImport = `import { CookiePanel } from "./components/CookiePanel/CookiePanel";`;
+
+function DocsPage() {
+	return (
+		<>
+			<Title />
+			<Description />
+			<Canvas
+				of={Default}
+				source={{ code: componentSource, language: "tsx" }}
+			/>
+			<Controls />
+			<Stories includePrimary />
+		</>
+	);
+}
 
 const meta = {
 	title: "Components/Feedback/CookiePanel",
-
 	component: CookiePanel,
 	tags: ["autodocs"],
 	parameters: {
 		layout: "fullscreen",
 		docs: {
-			description: {
-				component:
-					"A cookie consent dialog. It stores the visitor's choice in a cookie and calls `onAccept` / `onReject` so the host app decides what to load. <br> Requires `lucide-react` and `Tailwind CSS v4`.",
+			page: DocsPage,
+			description: { component: description },
+			source: {
+				transform: (code: string) =>
+					code.trimStart().startsWith("<")
+						? `${usageImport}\n\n${code
+								.replace(
+									"onAccept={() => {}}",
+									"onAccept={() => {\n\t\t// e.g. load your analytics script here\n\t}}",
+								)
+								.replace(
+									"onReject={() => {}}",
+									"onReject={() => {\n\t\t// optional\n\t}}",
+								)}`
+						: code,
 			},
 		},
 	},
@@ -41,13 +84,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-	parameters: {
-		docs: {
-			source: { code: componentSource, language: "tsx", type: "code" },
-		},
-	},
-};
+export const Default: Story = {};
 
 export const Localized: Story = {
 	args: {
