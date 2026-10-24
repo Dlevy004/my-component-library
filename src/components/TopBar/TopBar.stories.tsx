@@ -1,5 +1,12 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import {
+	Canvas,
+	Controls,
+	Description,
+	Stories,
+	Title,
+} from "@storybook/addon-docs/blocks";
 import { expect, waitFor } from "storybook/test";
 import { Drawer } from "../Drawer/Drawer";
 import { HamburgerButton } from "../HamburgerButton/HamburgerButton";
@@ -13,16 +20,60 @@ const description = [
 	"- React 18+, Tailwind CSS v4 with a class-based dark variant (`@custom-variant dark (&:where(.dark, .dark *));`)",
 	"",
 	"**Good to know**",
-	"- The title is the page's `h1`.",
+	"- The title is the page's `h1`, and it stays centered whatever is in `start` and `end`.",
 	"- By default the bar floats at the top of the viewport. Add top padding (about `pt-28`) to your page content, or set `fixed={false}` to keep it in the page flow.",
-	"- The title stays centered whatever is in `start` and `end`.",
 	"- See the `WithDrawer` example for combining it with `HamburgerButton` and `Drawer`.",
 ].join("\n");
 
-const profileButton = (
+const usageImport = `import { TopBar } from "./components/TopBar/TopBar";`;
+
+const withDrawerSource = `import { useState } from "react";
+import { Drawer } from "./components/Drawer/Drawer";
+import { HamburgerButton } from "./components/HamburgerButton/HamburgerButton";
+import { TopBar } from "./components/TopBar/TopBar";
+
+export function Layout() {
+	const [open, setOpen] = useState(false);
+
+	return (
+		<>
+			<TopBar
+				title="[Page title]"
+				end={
+					<HamburgerButton
+						className="lg:hidden"
+						controls="mobile-nav"
+						isOpen={open}
+						onClick={() => setOpen(true)}
+					/>
+				}
+			/>
+			<Drawer id="mobile-nav" open={open} onClose={() => setOpen(false)}>
+				<nav aria-label="Mobile navigation">{/* your links */}</nav>
+			</Drawer>
+		</>
+	);
+}`;
+
+function DocsPage() {
+	return (
+		<>
+			<Title />
+			<Description />
+			<Canvas
+				of={Default}
+				source={{ code: componentSource, language: "tsx" }}
+			/>
+			<Controls />
+			<Stories includePrimary />
+		</>
+	);
+}
+
+const profileButton = (label: string) => (
 	<button
 		type="button"
-		aria-label="Profile"
+		aria-label={label}
 		className="grid size-10 cursor-pointer place-items-center rounded-full border-none bg-neutral-300 font-bold text-neutral-900 dark:bg-neutral-700 dark:text-neutral-100"
 	>
 		AB
@@ -38,7 +89,7 @@ function WithDrawerDemo(args: TopBarProps) {
 				{...args}
 				end={
 					<>
-						{profileButton}
+						{profileButton("Profile")}
 						<HamburgerButton
 							controls="demo-drawer"
 							isOpen={open}
@@ -48,7 +99,10 @@ function WithDrawerDemo(args: TopBarProps) {
 				}
 			/>
 			<Drawer id="demo-drawer" open={open} onClose={() => setOpen(false)}>
-				<nav aria-label="Demo navigation" className="flex flex-col items-end gap-4 text-lg">
+				<nav
+					aria-label="Demo navigation"
+					className="flex flex-col items-end gap-4 text-lg"
+				>
 					<a href="#home">Home</a>
 					<a href="#about">About</a>
 				</nav>
@@ -64,23 +118,43 @@ const meta = {
 	parameters: {
 		layout: "fullscreen",
 		docs: {
-			story: { inline: true, iframeHeight: 240 },
+			page: DocsPage,
 			description: { component: description },
+			source: {
+				transform: (code: string) =>
+					code.trimStart().startsWith("<")
+						? `${usageImport}\n\n${code}`
+						: code,
+			},
 		},
 	},
 	decorators: [
-		(Story, { args }) => (
-			<>
-				<Story />
-				<main
-					className={`p-6 text-neutral-600 dark:text-neutral-400 text-center ${args.fixed === false ? "" : "pt-28"}`}
-				>
+		(Story, { args, viewMode }) => {
+			const padding = args.fixed === false ? "" : "pt-28";
+			const content = (
+				<main className={`p-6 text-neutral-600 text-center dark:text-neutral-400 ${padding}`}>
 					Page content
 				</main>
-			</>
-		),
+			);
+
+			// In the docs, a transformed box keeps the fixed bar inside the example
+			return viewMode === "docs" ? (
+				<div
+					className="relative h-56 overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-800"
+					style={{ transform: "translateZ(0)" }}
+				>
+					<Story />
+					{content}
+				</div>
+			) : (
+				<>
+					<Story />
+					{content}
+				</>
+			);
+		},
 	],
-	args: { title: "[Page Title]" },
+	args: { title: "[Page title]" },
 	argTypes: { start: { control: false }, end: { control: false } },
 } satisfies Meta<typeof TopBar>;
 
@@ -88,23 +162,30 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-	args: { end: profileButton },
-	parameters: {
-		docs: {
-			source: { code: componentSource, language: "tsx", type: "code" },
-		},
-	},
+	args: { end: profileButton("Profile") },
 	play: async ({ canvas }) => {
 		const heading = await canvas.findByRole("heading", {
 			level: 1,
-			name: "Clients",
+			name: "[Page title]",
 		});
 		await expect(heading.closest("header")).toHaveClass("fixed");
 	},
 };
 
+export const Localized: Story = {
+	args: {
+		title: "[Oldal címe]",
+		end: (
+			<>
+				{profileButton("Profil")}
+				<HamburgerButton label="Menü megnyitása" />
+			</>
+		),
+	},
+};
+
 export const InPageFlow: Story = {
-	args: { fixed: false, title: "[Page Title]", end: profileButton },
+	args: { fixed: false, title: "[Page title]", end: profileButton("Profile") },
 	play: async ({ canvas }) => {
 		const heading = await canvas.findByRole("heading", { level: 1 });
 		const header = heading.closest("header");
@@ -115,6 +196,11 @@ export const InPageFlow: Story = {
 
 export const WithDrawer: Story = {
 	render: (args) => <WithDrawerDemo {...args} />,
+	parameters: {
+		docs: {
+			source: { type: "code", language: "tsx", code: withDrawerSource },
+		},
+	},
 };
 
 export const OpensDrawerFromHamburger: Story = {
