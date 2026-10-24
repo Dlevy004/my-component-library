@@ -8,6 +8,8 @@ export interface ScrollUpButtonProps {
 	readonly label?: string;
 	/** Scroll distance (px) after which the button appears */
 	readonly threshold?: number;
+	/** Scrollable element to watch and scroll instead of the page, e.g. a panel with overflow-y: auto */
+	readonly scrollContainer?: HTMLElement | null;
 	/** Accent color (button background, hover border and icon) */
 	readonly accentColor?: string;
 	/** Accent color used in dark mode. Pick a color with at least 3:1 contrast on the page background */
@@ -17,29 +19,41 @@ export interface ScrollUpButtonProps {
 export function ScrollUpButton({
 	label = "Scroll to top",
 	threshold = 500,
+	scrollContainer,
 	accentColor = "#2563eb",
 	accentColorDark = "#60a5fa",
 }: ScrollUpButtonProps) {
 	const [isVisible, setIsVisible] = useState(false);
 
 	useEffect(() => {
-		const update = () => setIsVisible(window.scrollY > threshold);
+		const target: EventTarget = scrollContainer ?? window;
+		const update = () =>
+			setIsVisible(
+				(scrollContainer ? scrollContainer.scrollTop : window.scrollY) >
+					threshold,
+			);
 
-		window.addEventListener("scroll", update, { passive: true });
+		target.addEventListener("scroll", update, { passive: true });
 		// Check once after mount too (the browser may restore the scroll position)
 		const id = requestAnimationFrame(update);
 
 		return () => {
-			window.removeEventListener("scroll", update);
+			target.removeEventListener("scroll", update);
 			cancelAnimationFrame(id);
 		};
-	}, [threshold]);
+	}, [threshold, scrollContainer]);
 
 	const scrollToTop = () => {
 		const reduceMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		).matches;
-		window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+		const options: ScrollToOptions = {
+			top: 0,
+			behavior: reduceMotion ? "auto" : "smooth",
+		};
+
+		if (scrollContainer) scrollContainer.scrollTo(options);
+		else window.scrollTo(options);
 	};
 
 	return (
