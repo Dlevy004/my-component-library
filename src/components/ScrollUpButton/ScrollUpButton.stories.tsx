@@ -20,7 +20,7 @@ const meta = {
 	decorators: [
 		(Story) => (
 			<>
-				<div className="h-[2000px] p-6 text-neutral-500 dark:text-neutral-400">
+				<div className="h-[2000px] p-6 text-neutral-500 dark:text-neutral-400 text-center">
 					Scroll down to reveal the button
 				</div>
 				<Story />
