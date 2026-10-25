@@ -20,7 +20,7 @@ const description = [
 ].join("\n");
 
 function readSchema() {
-	const el = document.querySelector('script[type="application/ld+json"]');
+	const el = document.head.querySelector('script[type="application/ld+json"]');
 	return el ? JSON.parse(el.textContent ?? "{}") : null;
 }
 
@@ -100,7 +100,7 @@ export const EscapesMarkup: Story = {
 	args: { name: "</script><b>Evil</b>" },
 	play: async () => {
 		await waitFor(() => expect(readSchema()).not.toBeNull());
-		const el = document.querySelector('script[type="application/ld+json"]');
+		const el = document.head.querySelector('script[type="application/ld+json"]');
 		await expect(el?.textContent).not.toContain("</script>");
 		await expect(readSchema().name).toBe("</script><b>Evil</b>");
 	},
