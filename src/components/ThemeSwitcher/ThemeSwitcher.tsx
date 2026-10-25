@@ -8,8 +8,8 @@ export interface ThemeSwitcherProps {
 	readonly label?: string;
 	/** localStorage key that stores the choice ("dark" or "light") */
 	readonly storageKey?: string;
-	/** Class toggled on the <html> element in dark mode (must match your Tailwind dark variant) */
-	readonly darkClass?: string;
+	/** Class toggled on the `<html>` element in dark mode (must match your Tailwind dark variant) */
+    readonly darkClass?: string;
 	/** Accent color (dark track and icon) */
 	readonly accentColor?: string;
 	/** Extra classes for the button, e.g. margins */
