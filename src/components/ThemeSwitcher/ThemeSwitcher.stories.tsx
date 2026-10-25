@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
 	Canvas,
@@ -56,12 +57,14 @@ const meta = {
 		},
 	},
 	argTypes: { accentColor: { control: "color" } },
-	beforeEach: () => {
-		localStorage.removeItem("theme");
-		if (document.documentElement.classList.contains("dark")) {
-			document.documentElement.classList.remove("dark");
-		}
-	},
+    beforeEach: () => {
+        localStorage.removeItem("theme");
+        for (const name of ["dark", "night"]) {
+            if (document.documentElement.classList.contains(name)) {
+                document.documentElement.classList.remove(name);
+            }
+        }
+    },
 } satisfies Meta<typeof ThemeSwitcher>;
 
 export default meta;
@@ -101,5 +104,47 @@ export const TogglesAndRemembers: Story = {
 		await waitFor(() => expect(button).toHaveAttribute("aria-pressed", "false"));
 		await expect(document.documentElement).not.toHaveClass("dark");
 		await expect(localStorage.getItem("theme")).toBe("light");
+	},
+};
+
+function DarkClassDemo() {
+	const [darkClass, setDarkClass] = useState("dark");
+
+	return (
+		<>
+			<ThemeSwitcher darkClass={darkClass} />
+			<button type="button" onClick={() => setDarkClass("night")}>
+				Use night class
+			</button>
+		</>
+	);
+}
+
+export const MovesThemeToNewClass: Story = {
+	tags: ["!dev", "!autodocs"],
+	render: () => <DarkClassDemo />,
+	play: async ({ canvas, userEvent }) => {
+		await userEvent.click(
+			await canvas.findByRole("button", { name: /toggle theme/i }),
+		);
+		await waitFor(() => expect(document.documentElement).toHaveClass("dark"));
+
+		await userEvent.click(canvas.getByRole("button", { name: "Use night class" }));
+		await waitFor(() => expect(document.documentElement).toHaveClass("night"));
+		await expect(document.documentElement).not.toHaveClass("dark");
+	},
+};
+
+export const KeepsThemeWithoutStoredChoice: Story = {
+	tags: ["!dev", "!autodocs"],
+	render: () => <DarkClassDemo />,
+	play: async ({ canvas, userEvent }) => {
+		// dark mode set by other code, nothing stored in localStorage
+		document.documentElement.classList.add("dark");
+		await userEvent.click(
+			await canvas.findByRole("button", { name: "Use night class" }),
+		);
+		await waitFor(() => expect(document.documentElement).toHaveClass("night"));
+		await expect(document.documentElement).not.toHaveClass("dark");
 	},
 };

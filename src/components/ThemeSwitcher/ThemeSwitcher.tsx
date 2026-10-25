@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useSyncExternalStore, type CSSProperties } from "react";
+import { useEffect, useRef, useSyncExternalStore, type CSSProperties } from "react";
 import { Moon, Sun } from "lucide-react";
 
 export interface ThemeSwitcherProps {
@@ -37,6 +37,30 @@ export function ThemeSwitcher({
 		() => document.documentElement.classList.contains(darkClass),
 		() => false, // server snapshot
 	);
+
+    const appliedClass = useRef(darkClass);
+
+    // Apply a previously stored choice on mount, and move the theme to the new class when darkClass changes
+    useEffect(() => {
+        const root = document.documentElement;
+        const previous = appliedClass.current;
+        const wasDark = previous !== darkClass && root.classList.contains(previous);
+
+        if (previous !== darkClass) {
+            root.classList.remove(previous);
+            appliedClass.current = darkClass;
+        }
+
+        let stored: string | null = null;
+        try {
+            stored = localStorage.getItem(storageKey);
+        } catch {
+            // storage unavailable (e.g. private mode): keep the current theme
+        }
+
+        if (stored) root.classList.toggle(darkClass, stored === "dark");
+        else if (wasDark) root.classList.add(darkClass);
+    }, [storageKey, darkClass]);
 
 	// Apply a previously stored choice once on mount
 	useEffect(() => {
