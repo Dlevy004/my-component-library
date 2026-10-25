@@ -26,7 +26,7 @@ export function HamburgerButton({
 	controls,
 	onClick,
 	accentColor = "#2563eb",
-	accentColorDark = "#60a5fa",
+	accentColorDark = "#494d54",
 	className = "",
 }: HamburgerButtonProps) {
 	return (
