@@ -47,7 +47,6 @@ const meta = {
 		docs: {
 			page: DocsPage,
 			description: { component: description },
-            story: { inline: true, iframeHeight: 140 },
 			source: {
 				transform: (code: string) =>
 					code.trimStart().startsWith("<")

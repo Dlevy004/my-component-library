@@ -60,30 +60,30 @@ export function ThemeSwitcher({
 		}
 	};
 
-	return (
-		<button
-			type="button"
-			aria-label={label}
-			aria-pressed={isDark}
-			onClick={toggle}
-			style={{ "--theme-accent": accentColor } as CSSProperties}
-			className={`relative flex h-[clamp(1.2rem,2vw,1.8rem)] w-[clamp(2.5rem,4vw,3.5rem)] cursor-pointer items-center justify-start rounded-full border-none shadow-[inset_0_2px_2px_-2px_rgba(50,50,93,0.25),inset_0_2px_2px_-2px_rgba(0,0,0,0.3)] transition-all duration-200 ease-in focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--theme-accent) motion-reduce:transition-none lg:rotate-90 lg:overflow-hidden ${
-				isDark ? "bg-(--theme-accent)" : "bg-neutral-300"
-			} ${className}`}
-		>
-			<span
-				className={`relative flex aspect-square h-4/5 shrink-0 items-center justify-center rounded-full bg-white p-[0.2rem] text-(--theme-accent) transition-[left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none lg:rotate-270 ${
-					isDark
-						? "left-[calc(100%_-_clamp(1rem,1.5vw,1.5rem)_-_clamp(2px,0.4vw,4px))]"
-						: "left-[5%]"
-				}`}
-			>
-				{isDark ? (
-					<Sun className="size-full" aria-hidden="true" />
-				) : (
-					<Moon className="size-full" aria-hidden="true" />
-				)}
-			</span>
-		</button>
-	);
+    return (
+        <button
+            type="button"
+            aria-label={label}
+            aria-pressed={isDark}
+            onClick={toggle}
+            style={{ "--theme-accent": accentColor } as CSSProperties}
+            className={`relative flex h-[clamp(1.2rem,2vw,1.8rem)] w-[clamp(2.5rem,4vw,3.5rem)] cursor-pointer items-center justify-start rounded-full border-none shadow-[inset_0_2px_2px_-2px_rgba(50,50,93,0.25),inset_0_2px_2px_-2px_rgba(0,0,0,0.3)] transition-all duration-200 ease-in focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--theme-accent) motion-reduce:transition-none ${
+                isDark ? "bg-(--theme-accent)" : "bg-neutral-300"
+            } ${className}`}
+        >
+            <span
+                className={`relative flex aspect-square h-4/5 shrink-0 items-center justify-center rounded-full bg-white p-[0.2rem] text-(--theme-accent) transition-[left] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:transition-none ${
+                    isDark
+                        ? "left-[calc(100%_-_clamp(1rem,1.5vw,1.5rem)_-_clamp(2px,0.4vw,4px))]"
+                        : "left-[5%]"
+                }`}
+            >
+                {isDark ? (
+                    <Sun className="size-full" aria-hidden="true" />
+                ) : (
+                    <Moon className="size-full" aria-hidden="true" />
+                )}
+            </span>
+        </button>
+    );
 }
