@@ -16,10 +16,12 @@ import { HorizontalScrollGallery } from "./HorizontalScrollGallery";
 import componentSource from "./HorizontalScrollGallery.tsx?raw";
 
 const description = [
-	"A row of square images that slides sideways while the visitor scrolls down. The gallery is pinned in the middle of the screen until the last image has passed, then the page continues. Built with GSAP ScrollTrigger, adapted from a GSAP demo on CodePen (check the pen's license before publishing).",
+	"A row of square images that slides sideways while the visitor scrolls down. The gallery is pinned in the middle of the screen until the last image has passed, then the page continues.\n\nBuilt with **[GSAP ScrollTrigger](https://demos.gsap.com/demo/horizontal-scrolling-gallery/)**, adapted from a horizontal scrolling demo on CodePen.",
 	"",
 	"**Requirements**",
-	"- React 18+, `pnpm add gsap @gsap/react`, Tailwind CSS v4",
+	"- React 18",
+    "- `pnpm add gsap @gsap/react`",
+    "- Tailwind CSS v4",
 	"",
 	"**Good to know**",
 	"- The gallery adds scroll space: while stays in place, the visitor scrolls as far as the strip is wide. Put content before and after it, otherwise there is nothing to scroll to or from.",
@@ -27,7 +29,6 @@ const description = [
 	"- By default it follows the page scroll. Pass `scrollContainer` to follow a scrollable element instead. The examples on this page do that, so scroll the box.",
 	"- Sizes are recalculated when the window is resized, not when only a container changes size.",
 	"- With reduced motion enabled, nothing is pinned and the row can be swiped or scrolled sideways.",
-	"- The original demo also used GSAP's `ScrollSmoother` for smooth page scrolling. It is not included, because it takes over scrolling for the whole page.",
 	"- The example images are hotlinked from CodePen. Replace them with your own.",
     "- `smoothing` (1 second by default) lets the strip catch up with the scroll position, which hides the stepping of a mouse wheel. Use 0 to follow the scroll exactly, or a value up to about 2 for a lazier feel.",
 ].join("\n");
