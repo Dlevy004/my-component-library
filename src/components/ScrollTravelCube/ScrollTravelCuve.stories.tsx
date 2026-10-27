@@ -336,7 +336,7 @@ export const NoStopsDoesNothing: Story = {
 	render: (args) => <ScrollTravelCube {...args} targets={[]} />,
 	play: async ({ canvas }) => {
 		await canvas.findByRole("img", { name: "Rotating cube" });
-		await expect(ScrollTrigger.getAll().length).toBe(1);
+		await expect(ScrollTrigger.getAll().length).toBe(0);
 	},
 };
 
@@ -345,7 +345,7 @@ export const ReducedMotionStaysStill: Story = {
 	beforeEach: mockReducedMotion,
 	play: async ({ canvas, canvasElement }) => {
 		await canvas.findByRole("img", { name: "Rotating cube" });
-		await expect(ScrollTrigger.getAll().length).toBe(1);
+		await expect(ScrollTrigger.getAll().length).toBe(0);
 		const traveler = canvasElement.querySelector<HTMLElement>(
 			"[data-scroll-travel-cube]",
 		)!;
@@ -359,7 +359,7 @@ export const WithoutWebGL: Story = {
 	play: async ({ canvas }) => {
 		// the canvas stays empty, nothing is animated and nothing crashes
 		await canvas.findByRole("img", { name: "Rotating cube" });
-		await expect(ScrollTrigger.getAll().length).toBe(1);
+		await expect(ScrollTrigger.getAll().length).toBe(0);
 	},
 };
 

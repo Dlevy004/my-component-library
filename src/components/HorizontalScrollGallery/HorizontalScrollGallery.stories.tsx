@@ -193,7 +193,7 @@ export const ReducedMotionStaysStatic: Story = {
 	beforeEach: mockReducedMotion,
 	play: async ({ canvas }) => {
 		const group = await canvas.findByRole("group", { name: "Image gallery" });
-		await expect(ScrollTrigger.getAll().length).toBe(1);
+		await expect(ScrollTrigger.getAll().length).toBe(0);
 		await expect(group.style.height).toBe("");
 	},
 };

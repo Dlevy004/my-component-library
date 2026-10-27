@@ -303,7 +303,7 @@ export const NoStopsDoesNothing: Story = {
 		await waitFor(() =>
 			expect(canvasElement.querySelector("[data-scroll-travel]")).not.toBeNull(),
 		);
-		await expect(ScrollTrigger.getAll().length).toBe(1);
+		await expect(ScrollTrigger.getAll().length).toBe(0);
 	},
 };
 
@@ -316,7 +316,7 @@ export const ReducedMotionStaysStatic: Story = {
 			expect(element).not.toBeNull();
 			return element as HTMLElement;
 		});
-		await expect(ScrollTrigger.getAll().length).toBe(1);
+		await expect(ScrollTrigger.getAll().length).toBe(0);
 		await expect(traveler.style.transform).toBe("");
 	},
 };
