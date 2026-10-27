@@ -14,7 +14,7 @@ import { PanelMenu } from "./PanelMenu";
 import componentSource from "./PanelMenu.tsx?raw";
 
 const description = [
-	"A full-screen menu for the toggle button in the top right corner. The links, a highlight card and a dark footer panel slide in one after another, and when the menu is closed the panels fall away with a random tilt. Built with GSAP. Adapted from the GSAP CodePen demo \"Interruptible Single Timeline Enter/Exit\" (check the pen's license before publishing).",
+	"A full-screen menu for the toggle button in the top right corner. The links, a highlight card and a dark footer panel slide in one after another, and when the menu is closed the panels fall away with a random tilt. <br> Built with **[GSAP](https://demos.gsap.com/demo/interruptible-single-timeline-enterexit/)**. Adapted from the GSAP CodePen demo \"Interruptible Single Timeline Enter/Exit\".",
 	"",
 	"**Requirements**",
 	"- React 18+, `pnpm add gsap @gsap/react` (GSAP 3.15 or newer for `easeReverse`), Tailwind CSS v4 with a class-based dark variant (`@custom-variant dark (&:where(.dark, .dark *));`)",
