@@ -379,5 +379,6 @@ export const ReducedMotion: Story = {
 
 		await userEvent.click(canvas.getByRole("button", { name: "Close menu" }));
 		await waitFor(() => expect(isShown(nav)).toBe(false));
+        await expect(gsap.getTweensOf(nav).length).toBe(0);
 	},
 };

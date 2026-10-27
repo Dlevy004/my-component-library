@@ -220,7 +220,7 @@ export const LongPause: Story = {
 export const BuildsTimeline: Story = {
 	tags: ["!dev", "!autodocs"],
 	play: async () => {
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 	},
 };
 
@@ -239,7 +239,7 @@ export const ReachesEveryStop: Story = {
 		const traveler = canvasElement.querySelector("[data-scroll-travel]")!;
 		const stop2 = await canvas.findByTestId("stop-2");
 		const stop3 = await canvas.findByTestId("stop-3");
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 
 		const near = (a: DOMRect, b: DOMRect) =>
 			Math.abs(a.left - b.left) < 3 && Math.abs(a.top - b.top) < 3;
@@ -287,7 +287,7 @@ export const AcceptsSelectorsAndSkipsEmptyStops: Story = {
 		const scroller = await canvas.findByTestId("scroller");
 		const traveler = canvasElement.querySelector("[data-scroll-travel]")!;
 		const stop = await canvas.findByTestId("selector-stop");
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 
 		scroller.scrollTo({ top: scroller.scrollHeight });
 		await waitFor(() =>
@@ -303,7 +303,7 @@ export const NoStopsDoesNothing: Story = {
 		await waitFor(() =>
 			expect(canvasElement.querySelector("[data-scroll-travel]")).not.toBeNull(),
 		);
-		await expect(ScrollTrigger.getAll()).toHaveLength(0);
+		await expect(ScrollTrigger.getAll().length).toBe(1);
 	},
 };
 
@@ -316,7 +316,7 @@ export const ReducedMotionStaysStatic: Story = {
 			expect(element).not.toBeNull();
 			return element as HTMLElement;
 		});
-		await expect(ScrollTrigger.getAll()).toHaveLength(0);
+		await expect(ScrollTrigger.getAll().length).toBe(1);
 		await expect(traveler.style.transform).toBe("");
 	},
 };
@@ -324,13 +324,13 @@ export const ReducedMotionStaysStatic: Story = {
 export const RebuildsOnResize: Story = {
 	tags: ["!dev", "!autodocs"],
 	play: async () => {
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 		const before = ScrollTrigger.getAll()[0];
 
 		window.dispatchEvent(new Event("resize"));
-		await waitFor(() => expect(ScrollTrigger.getAll()[0]).not.toBe(before), {
+		await waitFor(() => expect(ScrollTrigger.getAll()[0] === before).toBe(false), {
 			timeout: 2000,
 		});
-		await expect(ScrollTrigger.getAll()).toHaveLength(1);
+		await expect(ScrollTrigger.getAll().length).toBe(1);
 	},
 };

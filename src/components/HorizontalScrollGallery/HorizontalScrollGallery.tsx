@@ -31,7 +31,7 @@ export interface HorizontalScrollGalleryProps {
 
 export function HorizontalScrollGallery({
 	images,
-	itemWidth = "33cqw",
+	itemWidth = "max(33cqw, min(100cqw - 4rem, 24rem))",
 	smoothing = 2,
 	scrollContainer,
 	label = "Image gallery",

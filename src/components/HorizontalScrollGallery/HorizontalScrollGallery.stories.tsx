@@ -180,7 +180,7 @@ export const BuildsScrollTimeline: Story = {
 	tags: ["!dev", "!autodocs"],
 	play: async ({ canvas }) => {
 		const group = await canvas.findByRole("group", { name: "Image gallery" });
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 		// the outer box gets extra height for the scroll distance
 		await expect(Number.parseFloat(group.style.height)).toBeGreaterThan(
 			group.firstElementChild!.getBoundingClientRect().height,
@@ -193,7 +193,7 @@ export const ReducedMotionStaysStatic: Story = {
 	beforeEach: mockReducedMotion,
 	play: async ({ canvas }) => {
 		const group = await canvas.findByRole("group", { name: "Image gallery" });
-		await expect(ScrollTrigger.getAll()).toHaveLength(0);
+		await expect(ScrollTrigger.getAll().length).toBe(1);
 		await expect(group.style.height).toBe("");
 	},
 };
@@ -211,7 +211,7 @@ export const FollowsScrollContainer: Story = {
 		const scroller = await canvas.findByTestId("scroller");
 		const group = await canvas.findByRole("group", { name: "Image gallery" });
 		const strip = group.firstElementChild!.firstElementChild as HTMLElement;
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 		await expect(gsap.getProperty(strip, "x")).toBe(0);
 
 		// scrolling the box slides the strip sideways

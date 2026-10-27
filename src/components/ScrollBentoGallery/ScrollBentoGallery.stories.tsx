@@ -177,8 +177,9 @@ export const BuildsPinnedTimeline: Story = {
 	tags: ["!dev", "!autodocs"],
 	play: async ({ canvas }) => {
 		const group = await canvas.findByRole("group", { name: "Image gallery" });
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 		await expect(group.parentElement).toHaveClass("pin-spacer");
+        await expect(group.parentElement?.classList.contains("pin-spacer")).toBe(true);
 	},
 };
 
@@ -187,8 +188,9 @@ export const ReducedMotionStaysStatic: Story = {
 	beforeEach: mockReducedMotion,
 	play: async ({ canvas }) => {
 		const group = await canvas.findByRole("group", { name: "Image gallery" });
-		await expect(ScrollTrigger.getAll()).toHaveLength(0);
+		await expect(ScrollTrigger.getAll().length).toBe(0);
 		await expect(group.parentElement).not.toHaveClass("pin-spacer");
+        await expect(group.parentElement?.classList.contains("pin-spacer")).toBe(false);
 	},
 };
 
@@ -208,7 +210,7 @@ export const FollowsScrollContainer: Story = {
 	play: async ({ canvas }) => {
 		const scroller = await canvas.findByTestId("scroller");
 		const group = await canvas.findByRole("group", { name: "Image gallery" });
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 
 		const firstTile = group.firstElementChild!.firstElementChild as HTMLElement;
 		const before = firstTile.style.cssText;
@@ -220,13 +222,13 @@ export const FollowsScrollContainer: Story = {
 export const RebuildsOnResize: Story = {
 	tags: ["!dev", "!autodocs"],
 	play: async () => {
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 		const before = ScrollTrigger.getAll()[0];
 
 		window.dispatchEvent(new Event("resize"));
-		await waitFor(() => expect(ScrollTrigger.getAll()[0]).not.toBe(before), {
+		await waitFor(() => expect(ScrollTrigger.getAll()[0] === before).toBe(false), {
 			timeout: 2000,
 		});
-		await expect(ScrollTrigger.getAll()).toHaveLength(1);
+		await expect(ScrollTrigger.getAll().length).toBe(1);
 	},
 };

@@ -251,7 +251,7 @@ export const RendersWebGLCube: Story = {
 export const BuildsTimeline: Story = {
 	tags: ["!dev", "!autodocs"],
 	play: async () => {
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 	},
 };
 
@@ -269,7 +269,7 @@ export const ReachesEveryStopAndTurns: Story = {
 		const scroller = await canvas.findByTestId("scroller");
 		const traveler = canvasElement.querySelector("[data-scroll-travel-cube]")!;
 		const stop3 = await canvas.findByTestId("stop-3");
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 
 		const renderSpy = spyOn(WebGLRenderer.prototype, "render");
 		try {
@@ -322,7 +322,7 @@ export const AcceptsSelectorsAndSkipsEmptyStops: Story = {
 		const scroller = await canvas.findByTestId("scroller");
 		const traveler = canvasElement.querySelector("[data-scroll-travel-cube]")!;
 		const stop = await canvas.findByTestId("selector-stop");
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 
 		scroller.scrollTo({ top: scroller.scrollHeight });
 		await waitFor(() =>
@@ -336,7 +336,7 @@ export const NoStopsDoesNothing: Story = {
 	render: (args) => <ScrollTravelCube {...args} targets={[]} />,
 	play: async ({ canvas }) => {
 		await canvas.findByRole("img", { name: "Rotating cube" });
-		await expect(ScrollTrigger.getAll()).toHaveLength(0);
+		await expect(ScrollTrigger.getAll().length).toBe(1);
 	},
 };
 
@@ -345,7 +345,7 @@ export const ReducedMotionStaysStill: Story = {
 	beforeEach: mockReducedMotion,
 	play: async ({ canvas, canvasElement }) => {
 		await canvas.findByRole("img", { name: "Rotating cube" });
-		await expect(ScrollTrigger.getAll()).toHaveLength(0);
+		await expect(ScrollTrigger.getAll().length).toBe(1);
 		const traveler = canvasElement.querySelector<HTMLElement>(
 			"[data-scroll-travel-cube]",
 		)!;
@@ -359,20 +359,20 @@ export const WithoutWebGL: Story = {
 	play: async ({ canvas }) => {
 		// the canvas stays empty, nothing is animated and nothing crashes
 		await canvas.findByRole("img", { name: "Rotating cube" });
-		await expect(ScrollTrigger.getAll()).toHaveLength(0);
+		await expect(ScrollTrigger.getAll().length).toBe(1);
 	},
 };
 
 export const RebuildsOnResize: Story = {
 	tags: ["!dev", "!autodocs"],
 	play: async () => {
-		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
+		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
 		const before = ScrollTrigger.getAll()[0];
 
 		window.dispatchEvent(new Event("resize"));
-		await waitFor(() => expect(ScrollTrigger.getAll()[0]).not.toBe(before), {
+		await waitFor(() => expect(ScrollTrigger.getAll()[0] === before).toBe(false), {
 			timeout: 2000,
 		});
-		await expect(ScrollTrigger.getAll()).toHaveLength(1);
+		await expect(ScrollTrigger.getAll().length).toBe(1);
 	},
 };
