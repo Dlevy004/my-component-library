@@ -94,13 +94,13 @@ function ScrollArea({
 		<div
 			ref={setContainer}
 			data-testid="scroller"
-			className="h-[420px] overflow-y-auto rounded-lg bg-white ring-1 ring-neutral-300 dark:bg-neutral-900 dark:ring-neutral-700"
+			className="h-105 overflow-y-auto rounded-lg bg-white ring-1 ring-neutral-300 dark:bg-neutral-900 dark:ring-neutral-700"
 		>
 			{container && (
 				<>
-					<Panel className="h-[420px]">Scroll down for the gallery</Panel>
+					<Panel className="h-105">Scroll down for the gallery</Panel>
 					{render(container)}
-					<Panel className="h-[420px]">That&apos;s it!</Panel>
+					<Panel className="h-105">That&apos;s it!</Panel>
 				</>
 			)}
 		</div>
@@ -182,7 +182,7 @@ export const BuildsScrollTimeline: Story = {
 		const group = await canvas.findByRole("group", { name: "Image gallery" });
 		await waitFor(() => expect(ScrollTrigger.getAll()).toHaveLength(1));
 		// the outer box gets extra height for the scroll distance
-		await expect(parseFloat(group.style.height)).toBeGreaterThan(
+		await expect(Number.parseFloat(group.style.height)).toBeGreaterThan(
 			group.firstElementChild!.getBoundingClientRect().height,
 		);
 	},
