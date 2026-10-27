@@ -71,7 +71,7 @@ function ScrollArea({
 }
 
 const meta = {
-	title: "Components/Navigation/ScrollUpButton",
+	title: "Components/Scroll/ScrollUpButton",
 	component: ScrollUpButton,
 	tags: ["autodocs"],
 	parameters: {
