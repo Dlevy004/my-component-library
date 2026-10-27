@@ -364,7 +364,7 @@ function PanelMenuContent({
 
 				<div
 					data-panel
-					className="relative z-3 flex min-h-0 w-full max-w-175 flex-1 flex-col overflow-y-auto rounded-[10px] border-2 border-[#0e100f] bg-[#fffce1] px-7 pt-12.5 pb-7 text-[#0e100f]"
+					className="relative z-3 flex min-h-0 w-full max-w-[700px] flex-1 flex-col overflow-y-auto rounded-[10px] border-2 border-[#0e100f] bg-[#fffce1] px-7 pt-[50px] pb-7 text-[#0e100f] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
 				>
 					<ul className="flex flex-1 flex-col justify-center">
 						{links.map((link) => (
