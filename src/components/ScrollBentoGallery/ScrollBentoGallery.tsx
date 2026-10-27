@@ -116,11 +116,11 @@ export function ScrollBentoGallery({
 			role="group"
 			aria-label={label}
 			style={{ "--bento-height": height } as CSSProperties}
-			className={`relative flex h-(--bento-height) w-full items-center justify-center overflow-hidden [container-type:size] ${className}`}
+			className={`relative flex h-(--bento-height) w-full items-center justify-center overflow-hidden @container-size ${className}`}
 		>
 			<div
 				ref={galleryRef}
-				className="relative grid h-full w-full flex-none grid-cols-[repeat(3,32.5cqw)] grid-rows-[repeat(4,23cqh)] content-center justify-center gap-[1cqh] data-[final]:grid-cols-[repeat(3,100cqw)] data-[final]:grid-rows-[repeat(4,49.5cqh)]"
+				className="relative grid h-full w-full flex-none grid-cols-[repeat(3,32.5cqw)] grid-rows-[repeat(4,23cqh)] content-center justify-center gap-[1cqh] data-final:grid-cols-[repeat(3,100cqw)] data-final:grid-rows-[repeat(4,49.5cqh)]"
 			>
 				{images.slice(0, AREAS.length).map((image, index) => (
 					<div
