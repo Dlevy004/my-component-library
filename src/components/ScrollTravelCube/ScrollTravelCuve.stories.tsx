@@ -10,13 +10,13 @@ import {
 	Title,
 } from "@storybook/addon-docs/blocks";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { WebGLRenderer, type Scene } from "three";
-import { expect, spyOn, waitFor } from "storybook/test";
+import { expect, waitFor } from "storybook/test";
 import {
 	ScrollTravelCube,
 	type ScrollTravelCubeProps,
 } from "./ScrollTravelCube";
 import componentSource from "./ScrollTravelCube.tsx?raw";
+import gsap from "gsap";
 
 const description = [
 	"A 3D cube that travels across the page while the visitor scrolls. It starts where you place it, then flies from stop to stop, resizing itself to fit each stop's box, and turns on the way. <br> Built with **Three.js**, **[GSAP ScrollTrigger and Flip](https://demos.gsap.com/demo/threejs-scroll-waypoints/)**, adapted from a GSAP demo on CodePen. It works like `ScrollTravel`, with a cube instead of your own content.",
@@ -180,6 +180,15 @@ const mockNoWebGL = () => {
 
 const rectOf = (element: Element) => element.getBoundingClientRect();
 
+// the cube's rotation is animated on a three.js Euler object
+const cubeRotation = () =>
+	gsap.globalTimeline
+		.getChildren(true, true, false)
+		.flatMap((tween) => (tween as gsap.core.Tween).targets())
+		.find((target) => (target as { isEuler?: boolean } | undefined)?.isEuler) as
+			| { x: number }
+			| undefined;
+
 const meta = {
 	title: "Components/Scroll/ScrollTravelCube",
 	component: ScrollTravelCube,
@@ -270,18 +279,9 @@ export const ReachesEveryStopAndTurns: Story = {
 		const traveler = canvasElement.querySelector("[data-scroll-travel-cube]")!;
 		const stop3 = await canvas.findByTestId("stop-3");
 		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
-
-		const renderSpy = spyOn(WebGLRenderer.prototype, "render");
-		try {
-			// scrolling down turns the cube, so the scene is drawn with a rotation
-			scroller.scrollTo({ top: 600 });
-			await waitFor(() => {
-				const scene = renderSpy.mock.lastCall?.[0] as Scene | undefined;
-				expect(scene?.children[0].rotation.x ?? 0).toBeGreaterThan(0);
-			});
-		} finally {
-			renderSpy.mockRestore();
-		}
+        // scrolling down turns the cube
+        scroller.scrollTo({ top: 600 });
+        await waitFor(() => expect(cubeRotation()?.x ?? 0).toBeGreaterThan(0));
 
 		// at the end of the scroll it sits on the last stop
 		scroller.scrollTo({ top: scroller.scrollHeight });

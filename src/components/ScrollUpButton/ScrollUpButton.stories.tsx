@@ -61,7 +61,7 @@ function ScrollArea({
 				data-testid="scroller"
 				className="h-full overflow-y-auto"
 			>
-				<div className="h-[1500px] p-6 text-center text-neutral-500 dark:text-neutral-400">
+				<div className="h-375 p-6 text-center text-neutral-500 dark:text-neutral-400">
 					Scroll this box to reveal the button
 				</div>
 			</div>
