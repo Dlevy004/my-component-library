@@ -89,11 +89,11 @@ export function HorizontalScrollGallery({
 			role="group"
 			aria-label={label}
 			style={{ "--hg-item": itemWidth } as CSSProperties}
-			className={`relative w-full [container-type:inline-size] ${className}`}
+			className={`relative w-full @container ${className}`}
 		>
 			<div
 				ref={stickyRef}
-				className="sticky top-[calc(50%_-_(var(--hg-item)_+_4rem)_/_2)] overflow-hidden motion-reduce:overflow-x-auto"
+				className="sticky top-[calc(50%-(var(--hg-item)+4rem)/2)] overflow-hidden motion-reduce:overflow-x-auto"
 			>
 				<div ref={stripRef} className="flex w-max flex-nowrap will-change-transform">
 					{images.map((image, index) => (
