@@ -25,7 +25,7 @@ const description = [
 	"",
 	"**Good to know**",
 	"- The gallery adds scroll space: while stays in place, the visitor scrolls as far as the strip is wide. Put content before and after it, otherwise there is nothing to scroll to or from.",
-	"- `itemWidth` is the width of the image, each tile also has 2rem of padding around it. `cqw` units are a percent of the gallery's own width, so give the gallery a parent with a definite width.",
+	"- `itemWidth` is the width of the image, each tile also has 2rem of padding around it. By default the image fills the screen width on phones (one image at a time) and is a third of the gallery's width on wide screens. `cqw` units are a percent of the gallery's own width, so give the gallery a parent with a definite width.",
 	"- By default it follows the page scroll. Pass `scrollContainer` to follow a scrollable element instead. The examples on this page do that, so scroll the box.",
 	"- Sizes are recalculated when the window is resized, not when only a container changes size.",
 	"- With reduced motion enabled, nothing is pinned and the row can be swiped or scrolled sideways.",

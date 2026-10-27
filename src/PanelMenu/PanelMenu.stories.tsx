@@ -26,8 +26,7 @@ const description = [
 	"- The menu closes with the toggle button, Esc, a click on the backdrop and a click on any link. While it is open the page cannot scroll, and in these examples that includes this docs page.",
 	"- Panels without content (`highlight`, `bottom`) are left out. The panel colors are fixed. `accentColor` and `accentColorLight` only change the highlight panel, and its text is dark, so keep both colors light enough.",
 	"- With reduced motion enabled, the menu opens and closes without animation.",
-	"- Place it at the top level of the page. A parent with a `transform` or its own stacking context would trap the full-screen overlay.",
-	"- Next.js: the file starts with `\"use client\"`, so it works as is.",
+	"- Place it at the top level of the page. A parent with a `transform` or its own stacking context would trap the full-screen overlay."
 ].join("\n");
 
 const usageSnippet = `import { PanelMenu } from "./components/PanelMenu/PanelMenu";

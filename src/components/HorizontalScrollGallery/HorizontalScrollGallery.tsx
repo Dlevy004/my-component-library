@@ -17,8 +17,8 @@ export interface HorizontalGalleryImage {
 export interface HorizontalScrollGalleryProps {
 	/** Images, shown as square tiles in a row */
 	readonly images: readonly HorizontalGalleryImage[];
-	/** Width of one tile (without its padding) as a CSS length. `cqw` is a percent of the gallery's own width */
-	readonly itemWidth?: string;
+	/** Width of one image (without its 2rem padding) as a CSS length. `cqw` is a percent of the gallery's own width. The default fills the width on narrow screens (one image at a time, at most 24rem) and is a third of the width on wide ones */
+    readonly itemWidth?: string;
 	/** Seconds the strip takes to catch up with the scroll position. Higher is smoother but lags more, 0 follows the scroll exactly */
 	readonly smoothing?: number;
 	/** Scrollable element to watch instead of the page, e.g. a panel with overflow-y: auto */
