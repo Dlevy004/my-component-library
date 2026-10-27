@@ -110,7 +110,7 @@ const mockReducedMotion = () => {
 };
 
 const meta = {
-	title: "Components/Media/ScrollBentoGallery",
+	title: "Components/Scroll/ScrollBentoGallery",
 	component: ScrollBentoGallery,
 	tags: ["autodocs"],
 	parameters: {

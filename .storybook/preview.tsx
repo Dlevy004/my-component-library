@@ -44,7 +44,7 @@ const preview: Preview = {
                     "Navigation",
                     "Settings",
                     "Meta",
-                    "Media"
+                    "Scroll"
                 ]
             ] },
         },
