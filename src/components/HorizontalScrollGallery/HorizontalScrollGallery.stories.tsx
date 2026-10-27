@@ -225,3 +225,23 @@ export const FollowsScrollContainer: Story = {
 export const ExactScrub: Story = {
 	args: { smoothing: 0 },
 };
+
+export const FillsNarrowScreens: Story = {
+	tags: ["!dev", "!autodocs"],
+	decorators: [
+		(Story) => (
+			<div style={{ width: 390 }}>
+				<Story />
+			</div>
+		),
+	],
+	play: async ({ canvas }) => {
+		const group = await canvas.findByRole("group", { name: "Image gallery" });
+		const image = group.querySelector("img")!;
+		await waitFor(() =>
+			expect(
+				Math.abs(image.getBoundingClientRect().width - (390 - 64)),
+			).toBeLessThan(2),
+		);
+	},
+};
