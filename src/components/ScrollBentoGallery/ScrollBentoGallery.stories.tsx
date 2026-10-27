@@ -89,7 +89,7 @@ function ScrollArea({
 		<div
 			ref={setContainer}
 			data-testid="scroller"
-			className="h-[420px] overflow-y-auto rounded-lg ring-1 ring-neutral-300 dark:ring-neutral-700"
+			className="h-105 overflow-y-auto rounded-lg ring-1 ring-neutral-300 dark:ring-neutral-700"
 		>
 			{container && render(container)}
 			<Filler />

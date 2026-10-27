@@ -40,12 +40,12 @@ export function Section() {
 	const [stopTwo, setStopTwo] = useState<HTMLElement | null>(null);
 
 	return (
-		<div className="relative h-[800px]">
+		<div className="relative h-200">
 			<ScrollTravel targets={[stopOne, stopTwo]}>
 				<img src="/images/ball.png" alt="" />
 			</ScrollTravel>
-			<div ref={setStopOne} className="absolute top-1/2 left-[10%] size-[100px]" />
-			<div ref={setStopTwo} className="absolute right-[10%] bottom-12 size-[100px]" />
+			<div ref={setStopOne} className="absolute top-1/2 left-[10%] size-25" />
+			<div ref={setStopTwo} className="absolute right-[10%] bottom-12 size-25" />
 		</div>
 	);
 }`;
@@ -97,7 +97,7 @@ function Slot({
 }) {
 	return (
 		<div
-			className={`absolute grid size-[140px] place-items-center rounded-[10px] border-2 border-dashed border-neutral-400 dark:border-neutral-600 ${className}`}
+			className={`absolute grid size-35 place-items-center rounded-[10px] border-2 border-dashed border-neutral-400 dark:border-neutral-600 ${className}`}
 		>
 			{children}
 		</div>
@@ -113,7 +113,7 @@ function FlightDemo(args: ScrollTravelProps) {
 	return (
 		<>
 			<Spacer className="h-80">Scroll down</Spacer>
-			<div className="relative h-[800px]">
+			<div className="relative h-200">
 				<Slot className="top-[10%] left-[60%]">
 					<ScrollTravel
 						{...args}
@@ -122,13 +122,13 @@ function FlightDemo(args: ScrollTravelProps) {
 					/>
 				</Slot>
 				<Slot className="top-1/2 left-[10%]">
-					<div ref={setSecond} data-testid="stop-2" className="size-[100px]" />
+					<div ref={setSecond} data-testid="stop-2" className="size-25" />
 				</Slot>
 				<Slot className="right-[10%] bottom-12">
-					<div ref={setThird} data-testid="stop-3" className="size-[100px]" />
+					<div ref={setThird} data-testid="stop-3" className="size-25" />
 				</Slot>
 			</div>
-			<div ref={setFinalSpacer} className="h-[420px]" />
+			<div ref={setFinalSpacer} className="h-105" />
 		</>
 	);
 }
@@ -146,7 +146,7 @@ function ScrollArea({
 		<div
 			ref={setContainer}
 			data-testid="scroller"
-			className="h-[420px] overflow-y-auto rounded-lg bg-white ring-1 ring-neutral-300 dark:bg-neutral-900 dark:ring-neutral-700"
+			className="h-105 overflow-y-auto rounded-lg bg-white ring-1 ring-neutral-300 dark:bg-neutral-900 dark:ring-neutral-700"
 		>
 			{container && render(container)}
 		</div>
@@ -265,7 +265,7 @@ export const AcceptsSelectorsAndSkipsEmptyStops: Story = {
 			render={(container) => (
 				<>
 					<Spacer className="h-80" />
-					<div className="relative h-[800px]">
+					<div className="relative h-200">
 						<ScrollTravel
 							{...args}
 							targets={[null, "[data-selector-stop]"]}
@@ -275,10 +275,10 @@ export const AcceptsSelectorsAndSkipsEmptyStops: Story = {
 						<div
 							data-selector-stop=""
 							data-testid="selector-stop"
-							className="absolute right-[10%] bottom-12 size-[100px]"
+							className="absolute right-[10%] bottom-12 size-25"
 						/>
 					</div>
-					<div className="h-[420px]" />
+					<div className="h-105" />
 				</>
 			)}
 		/>
