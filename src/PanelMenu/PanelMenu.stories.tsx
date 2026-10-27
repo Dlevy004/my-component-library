@@ -176,7 +176,7 @@ const meta = {
 			// In the docs, a transformed box keeps the fixed overlay inside the example
 			return viewMode === "docs" ? (
 				<div
-					className="relative h-[640px] overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-800"
+					className="relative h-160 overflow-hidden rounded-lg border border-neutral-200 dark:border-neutral-800"
 					style={{ transform: "translateZ(0)" }}
 				>
 					<Story />

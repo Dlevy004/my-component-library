@@ -364,7 +364,7 @@ function PanelMenuContent({
 
 				<div
 					data-panel
-					className="relative z-3 flex min-h-0 w-full max-w-[700px] flex-1 flex-col overflow-y-auto rounded-[10px] border-2 border-[#0e100f] bg-[#fffce1] px-7 pt-[50px] pb-7 text-[#0e100f]"
+					className="relative z-3 flex min-h-0 w-full max-w-175 flex-1 flex-col overflow-y-auto rounded-[10px] border-2 border-[#0e100f] bg-[#fffce1] px-7 pt-12.5 pb-7 text-[#0e100f]"
 				>
 					<ul className="flex flex-1 flex-col justify-center">
 						{links.map((link) => (
@@ -392,7 +392,7 @@ function PanelMenuContent({
 				{highlight && (
 					<div
 						data-panel
-						className="relative z-2 flex min-h-[180px] w-full max-w-[700px] flex-col justify-center rounded-[10px] border-2 border-black/50 bg-linear-135 from-(--pm-accent) via-(--pm-accent-light) via-40% to-(--pm-accent) px-7 py-6 text-[#0e100f]"
+						className="relative z-2 flex min-h-45 w-full max-w-175 flex-col justify-center rounded-[10px] border-2 border-black/50 bg-linear-135 from-(--pm-accent) via-(--pm-accent-light) via-40% to-(--pm-accent) px-7 py-6 text-[#0e100f]"
 					>
 						{highlight}
 					</div>
@@ -401,7 +401,7 @@ function PanelMenuContent({
 				{bottom && (
 					<div
 						data-panel
-						className="relative z-1 flex min-h-[120px] w-full max-w-[700px] items-center rounded-[10px] border-2 border-[#42433d] bg-[#0e100f] px-7 py-6 text-[#bbbaa6]"
+						className="relative z-1 flex min-h-30 w-full max-w-175 items-center rounded-[10px] border-2 border-[#42433d] bg-[#0e100f] px-7 py-6 text-[#bbbaa6]"
 					>
 						{bottom}
 					</div>
