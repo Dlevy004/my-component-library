@@ -15,7 +15,7 @@ import { ScrollTravel, type ScrollTravelProps } from "./ScrollTravel";
 import componentSource from "./ScrollTravel.tsx?raw";
 
 const description = [
-	"An element that travels across the page while the visitor scrolls. It starts where you place it, then flies from stop to stop, resizing itself to fit each stop's box. Built with GSAP ScrollTrigger and Flip, adapted from a GSAP demo on CodePen (check the pen's license before publishing).",
+	"An element that travels across the page while the visitor scrolls. It starts where you place it, then flies from stop to stop, resizing itself to fit each stop's box. <br> Built with **[GSAP ScrollTrigger and Flip](https://demos.gsap.com/demo/scroll-waypoints/)**, adapted from a GSAP demo on CodePen.",
 	"",
 	"**Requirements**",
 	"- React 18+, `pnpm add gsap @gsap/react`, Tailwind CSS v4",
@@ -30,7 +30,6 @@ const description = [
 	"- By default it follows the page scroll. Pass `scrollContainer` to follow a scrollable element instead. The examples on this page do that, so scroll the box.",
 	"- With reduced motion enabled, the traveler stays where it is.",
 	"- The example image is hotlinked from CodePen. Replace it with your own.",
-	"- Next.js: the file starts with `\"use client\"`, so it works as is.",
 ].join("\n");
 
 const usageSnippet = `import { useState } from "react";

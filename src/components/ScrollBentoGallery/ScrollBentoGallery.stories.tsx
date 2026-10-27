@@ -15,7 +15,7 @@ import { ScrollBentoGallery } from "./ScrollBentoGallery";
 import componentSource from "./ScrollBentoGallery.tsx?raw";
 
 const description = [
-	"A bento-style image grid that expands to fill its box as the visitor scrolls. The page pins in place while the images grow, then scrolling continues. <br> Built with **GSAP** ScrollTrigger and Flip, adapted from a GSAP demo on CodePen.",
+	"A bento-style image grid that expands to fill its box as the visitor scrolls. The page pins in place while the images grow, then scrolling continues. <br> Built with **[GSAP ScrollTrigger and Flip](https://demos.gsap.com/demo/scrubbed-bento-gallery/)**, adapted from a GSAP demo on CodePen.",
 	"",
 	"**Requirements**",
 	"- React 18+, `pnpm add gsap @gsap/react`, Tailwind CSS v4",
