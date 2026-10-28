@@ -383,3 +383,29 @@ export const ReducedMotion: Story = {
         await expect(gsap.getTweensOf(nav).length).toBe(0);
 	},
 };
+
+export const IgnoresRepeatedClose: Story = {
+	tags: ["!dev", "!autodocs"],
+	beforeEach: speedUp,
+	play: async ({ canvas, canvasElement, userEvent, args }) => {
+		const nav = canvasElement.querySelector("nav")!;
+		await userEvent.click(
+			await canvas.findByRole("button", { name: "Open menu" }),
+		);
+		const toggle = await canvas.findByRole("button", { name: "Close menu" });
+		await waitFor(() => expect(isFullyOpen(nav)).toBe(true));
+
+		const press = () =>
+			document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+		press();
+		press();
+
+		await waitFor(() =>
+			expect(toggle).toHaveAttribute("aria-expanded", "false"),
+		);
+
+		await expect(args.onOpenChange).toHaveBeenCalledTimes(2);
+		await expect(args.onOpenChange).toHaveBeenLastCalledWith(false);
+		await waitFor(() => expect(isShown(nav)).toBe(false), { timeout: 3000 });
+	},
+};
