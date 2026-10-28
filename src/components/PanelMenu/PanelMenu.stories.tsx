@@ -332,6 +332,7 @@ export const ClosesOnLinkClick: Story = {
 	beforeEach: speedUp,
 	play: async ({ canvas, canvasElement, userEvent, args }) => {
 		const nav = canvasElement.querySelector("nav")!;
+        canvasElement.addEventListener("click", (event) => event.preventDefault());
 		await userEvent.click(
 			await canvas.findByRole("button", { name: "Open menu" }),
 		);
