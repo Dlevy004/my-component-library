@@ -17,7 +17,7 @@ const description = [
 	"A full-screen menu for the toggle button in the top right corner. The links, a highlight card and a dark footer panel slide in one after another, and when the menu is closed the panels fall away with a random tilt. <br> Built with **[GSAP](https://demos.gsap.com/demo/interruptible-single-timeline-enterexit/)**. Adapted from the GSAP CodePen demo \"Interruptible Single Timeline Enter/Exit\".",
 	"",
 	"**Requirements**",
-	"- React 18+, `pnpm add gsap @gsap/react` (GSAP 3.15 or newer for `easeReverse`), Tailwind CSS v4 with a class-based dark variant (`@custom-variant dark (&:where(.dark, .dark *));`)",
+	"- React 19+, `pnpm add gsap @gsap/react` (GSAP 3.15 or newer for `easeReverse`), Tailwind CSS v4 with a class-based dark variant (`@custom-variant dark (&:where(.dark, .dark *));`)",
 	"",
 	"**Good to know**",
 	"- The toggle button is fixed to the top right corner, above the panels. Move it with `className`. Closed, its icon is dark in light mode and light in dark mode. Open, it is always dark, because it sits on the light top panel.",
