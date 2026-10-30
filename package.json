@@ -11,12 +11,15 @@
     "test:coverage": "vitest run --project=storybook --coverage"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@tailwindcss/vite": "^4.3.3",
+    "gsap": "^3.15.0",
     "lucide-react": "^1.59.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^6.30.6",
     "tailwindcss": "^4.3.3",
+    "three": "^0.186.1",
     "vite-react-ssg": "^0.9.2"
   },
   "devDependencies": {
@@ -30,6 +33,7 @@
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
+    "@types/three": "^0.186.0",
     "@vitejs/plugin-react": "^6.1.1",
     "@vitest/browser-playwright": "^5.0.5",
     "@vitest/coverage-v8": "^5.0.5",
