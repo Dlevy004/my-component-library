@@ -24,13 +24,13 @@ const description = [
     "- Tailwind CSS v4",
 	"",
 	"**Good to know**",
-	"- The gallery adds scroll space: while stays in place, the visitor scrolls as far as the strip is wide. Put content before and after it, otherwise there is nothing to scroll to or from.",
+	"- The gallery adds scroll space: while it stays in place, the visitor scrolls as far as the strip is wide. Put content before and after it, otherwise there is nothing to scroll to or from.",
 	"- `itemWidth` is the width of the image, each tile also has 2rem of padding around it. By default the image fills the screen width on phones (one image at a time) and is a third of the gallery's width on wide screens. `cqw` units are a percent of the gallery's own width, so give the gallery a parent with a definite width.",
 	"- By default it follows the page scroll. Pass `scrollContainer` to follow a scrollable element instead. The examples on this page do that, so scroll the box.",
 	"- Sizes are recalculated when the window is resized, not when only a container changes size.",
 	"- With reduced motion enabled, nothing is pinned and the row can be swiped or scrolled sideways.",
 	"- The example images are hotlinked from CodePen. Replace them with your own.",
-    "- `smoothing` (1 second by default) lets the strip catch up with the scroll position, which hides the stepping of a mouse wheel. Use 0 to follow the scroll exactly, or a value up to about 2 for a lazier feel.",
+    "- `smoothing` (2 seconds by default) lets the strip catch up with the scroll position, which hides the stepping of a mouse wheel. Use 0 to follow the scroll exactly, or a lower value for a more direct feel.",
 ].join("\n");
 
 const usageSnippet = `import { HorizontalScrollGallery } from "./components/HorizontalScrollGallery/HorizontalScrollGallery";
