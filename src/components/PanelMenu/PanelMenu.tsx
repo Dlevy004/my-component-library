@@ -264,6 +264,28 @@ function PanelMenuContent({
 		if (!open) return;
 		const onKeyDown = (event: KeyboardEvent) => {
 			if (event.key === "Escape") setMenu(false);
+			if (event.key === "Tab") {
+				const focusable = [
+					buttonRef.current!,
+					...navRef.current!.querySelectorAll<HTMLElement>(
+						'a[href], button:not([tabindex="-1"]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+					),
+				];
+				const first = focusable[0];
+				const last = focusable[focusable.length - 1];
+				const active = document.activeElement;
+				const inside = focusable.includes(active as HTMLElement);
+				if (!inside) {
+					event.preventDefault();
+					(event.shiftKey ? last : first).focus();
+				} else if (event.shiftKey && active === first) {
+					event.preventDefault();
+					last.focus();
+				} else if (!event.shiftKey && active === last) {
+					event.preventDefault();
+					first.focus();
+				}
+			}
 		};
 		document.addEventListener("keydown", onKeyDown);
 		return () => document.removeEventListener("keydown", onKeyDown);
