@@ -253,6 +253,7 @@ export function ScrollTravelCube({
 			dependencies: [
 				layoutKey,
 				stopCount,
+                targets,
 				scrollContainer,
 				endTrigger,
 				start,
