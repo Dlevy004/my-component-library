@@ -45,6 +45,22 @@ const resolve = (stop: ScrollTravelStop) =>
 		? document.querySelector<HTMLElement>(stop)
 		: (stop ?? null);
 
+const stopIds = new WeakMap<HTMLElement, number>();
+let nextStopId = 0;
+
+const getStopKey = (stop: ScrollTravelStop) => {
+	if (typeof stop === "string") return `selector:${stop}`;
+	if (!stop) return "empty";
+
+	let id = stopIds.get(stop);
+	if (id === undefined) {
+		id = ++nextStopId;
+		stopIds.set(stop, id);
+	}
+
+	return `element:${id}`;
+};
+
 export function ScrollTravel({
 	children,
 	targets,
@@ -76,57 +92,60 @@ export function ScrollTravel({
 		};
 	}, []);
 
-	// Stops that arrive later (e.g. elements stored in state) rebuild the animation
-	const stopCount = targets.filter(Boolean).length;
+    // Rebuild when target identities or their order change
+    const targetsKey = JSON.stringify(targets.map(getStopKey));
 
 	useGSAP(
-		() => {
-			// Visitors who prefer reduced motion get a static element
-			if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        () => {
+            const mm = gsap.matchMedia();
 
-			const anchor = anchorRef.current!; // always set once effects run
-			const traveler = travelerRef.current!;
-			const stops = targets
-				.map(resolve)
-				.filter((stop): stop is HTMLElement => stop !== null);
-			if (stops.length === 0) return;
+            mm.add("(prefers-reduced-motion: no-preference)", () => {
+                const anchor = anchorRef.current!;
+                const traveler = travelerRef.current!;
+                const stops = targets
+                    .map(resolve)
+                    .filter((stop): stop is HTMLElement => stop !== null);
 
-			const timeline = gsap.timeline({
-				scrollTrigger: {
-					// the anchor stays in place, the traveler flies away from it
-					trigger: anchor,
-					scroller: scrollContainer ?? undefined,
-					start,
-					endTrigger: endTrigger ?? stops.at(-1),
-					end,
-					scrub: smoothing > 0 ? smoothing : true,
-				},
-			});
+                if (stops.length === 0) return;
 
-			stops.forEach((stop, index) => {
-				const flight = Flip.fit(traveler, Flip.getState(stop), {
-					ease: "none",
-					duration: 1,
-				}) as gsap.core.Tween;
+                const timeline = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: anchor,
+                        scroller: scrollContainer ?? undefined,
+                        start,
+                        endTrigger: endTrigger ?? stops.at(-1),
+                        end,
+                        scrub: smoothing > 0 ? smoothing : true,
+                    },
+                });
 
-				if (index === 0) timeline.add(flight);
-				else timeline.add(flight, `+=${hold}`);
-			});
-		},
-		{
-			dependencies: [
-				layoutKey,
-				stopCount,
-				scrollContainer,
-				endTrigger,
-				start,
-				end,
-				hold,
-				smoothing,
-			],
-			revertOnUpdate: true,
-		},
-	);
+                stops.forEach((stop, index) => {
+                    const flight = Flip.fit(traveler, Flip.getState(stop), {
+                        ease: "none",
+                        duration: 1,
+                    }) as gsap.core.Tween;
+
+                    if (index === 0) timeline.add(flight);
+                    else timeline.add(flight, `+=${hold}`);
+                });
+            });
+
+            return () => mm.revert();
+        },
+        {
+            dependencies: [
+                layoutKey,
+                targetsKey,
+                size,
+                scrollContainer,
+                endTrigger,
+                start,
+                end,
+                hold,
+                smoothing,
+            ],
+        },
+    );
 
 	return (
 		<div
