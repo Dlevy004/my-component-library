@@ -54,6 +54,10 @@ export function ScrollBentoGallery({
 	const galleryRef = useRef<HTMLDivElement>(null);
 	const [layoutKey, setLayoutKey] = useState(0);
 
+    const imageSources = JSON.stringify(
+        images.slice(0, AREAS.length).map((image) => image.src),
+    );
+
 	// The final layout depends on the size of the box, so rebuild after a resize
 	useEffect(() => {
 		let timer: ReturnType<typeof setTimeout> | undefined;
@@ -105,7 +109,7 @@ export function ScrollBentoGallery({
 		},
 		{
 			scope: wrapRef,
-			dependencies: [layoutKey, scrollDistance, scrollContainer, images.length],
+			dependencies: [layoutKey, imageSources, scrollDistance, scrollContainer, images.length],
 			revertOnUpdate: true,
 		},
 	);
