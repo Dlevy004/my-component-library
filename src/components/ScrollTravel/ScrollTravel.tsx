@@ -144,6 +144,7 @@ export function ScrollTravel({
                 hold,
                 smoothing,
             ],
+            revertOnUpdate: true,
         },
     );
 

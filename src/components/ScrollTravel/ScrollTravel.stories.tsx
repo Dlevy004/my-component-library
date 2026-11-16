@@ -26,7 +26,7 @@ const description = [
 	"- It starts moving when its top reaches the middle of the screen (`start`) and arrives at the last stop when that stop's top reaches the middle (`end`). Set `endTrigger` to end later, e.g. on a spacer after the last stop.",
 	"- `hold` is the pause between two stops. `smoothing` lets the traveler catch up with the scroll position, which hides the stepping of a mouse wheel.",
 	"- The traveler, the stops and `endTrigger` must scroll together. Do not put stops in fixed or sticky elements.",
-	"- Positions are measured when the component mounts and when the window is resized. If the layout changes later (e.g. images load), remount it by changing its `key`.",
+	"- Positions are measured when the component mounts, when its targets change and when the window is resized. If the layout changes later (e.g. images load), remount it by changing its `key`.",
 	"- By default it follows the page scroll. Pass `scrollContainer` to follow a scrollable element instead. The examples on this page do that, so scroll the box.",
 	"- With reduced motion enabled, the traveler stays where it is.",
 	"- The example image is hotlinked from CodePen. Replace it with your own.",
@@ -133,6 +133,40 @@ function FlightDemo(args: ScrollTravelProps) {
 	);
 }
 
+// Mount ScrollTravel only after all target references are available.
+// This keeps the resize test independent from the initial ref updates.
+function ResizeDemo(args: ScrollTravelProps) {
+	const [second, setSecond] = useState<HTMLElement | null>(null);
+	const [third, setThird] = useState<HTMLElement | null>(null);
+	const [finalSpacer, setFinalSpacer] = useState<HTMLElement | null>(null);
+
+	const ready = second !== null && third !== null && finalSpacer !== null;
+
+	return (
+		<>
+			<Spacer className="h-80">Scroll down</Spacer>
+			<div className="relative h-200">
+				<Slot className="top-[10%] left-[60%]">
+					{ready && (
+						<ScrollTravel
+							{...args}
+							targets={[second, third]}
+							endTrigger={finalSpacer}
+						/>
+					)}
+				</Slot>
+				<Slot className="top-1/2 left-[10%]">
+					<div ref={setSecond} data-testid="stop-2" className="size-25" />
+				</Slot>
+				<Slot className="right-[10%] bottom-12">
+					<div ref={setThird} data-testid="stop-3" className="size-25" />
+				</Slot>
+			</div>
+			<div ref={setFinalSpacer} className="h-105" />
+		</>
+	);
+}
+
 // A scrollable box that drives the animation. It only renders its content once
 // the box exists, because ScrollTrigger needs the element.
 function ScrollArea({
@@ -153,19 +187,43 @@ function ScrollArea({
 	);
 }
 
-const mockReducedMotion = () => {
+const mockMotionPreference = (reduced: boolean) => {
 	const original = window.matchMedia;
-	window.matchMedia = ((query: string) =>
-		({
-			matches: query.includes("prefers-reduced-motion"),
-			media: query,
-		}) as MediaQueryList) as typeof window.matchMedia;
+
+	window.matchMedia = ((query: string) => {
+		const media = original.call(window, query);
+
+		if (query.includes("prefers-reduced-motion")) {
+			Object.defineProperty(media, "matches", {
+				configurable: true,
+				value: query.includes(": reduce") ? reduced : !reduced,
+			});
+		}
+
+		return media;
+	}) as typeof window.matchMedia;
+
 	return () => {
 		window.matchMedia = original;
 	};
 };
 
+const mockReducedMotion = () => mockMotionPreference(true);
+const mockNoReducedMotion = () => mockMotionPreference(false);
+
 const rectOf = (element: Element) => element.getBoundingClientRect();
+
+// Get only the ScrollTriggers belonging to this ScrollTravel instance
+const getTravelTriggers = (canvasElement: HTMLElement) => {
+	const traveler = canvasElement.querySelector<HTMLElement>(
+		"[data-scroll-travel]",
+	);
+	const anchor = traveler?.parentElement;
+
+	return anchor
+		? ScrollTrigger.getAll().filter((trigger) => trigger.trigger === anchor)
+		: [];
+};
 
 const meta = {
 	title: "Components/Scroll/ScrollTravel",
@@ -219,13 +277,17 @@ export const LongPause: Story = {
 
 export const BuildsTimeline: Story = {
 	tags: ["!dev", "!autodocs"],
-	play: async () => {
-		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
+	beforeEach: mockNoReducedMotion,
+	play: async ({ canvasElement }) => {
+		await waitFor(() =>
+			expect(getTravelTriggers(canvasElement)).toHaveLength(1),
+		);
 	},
 };
 
 export const ReachesEveryStop: Story = {
 	tags: ["!dev", "!autodocs"],
+	beforeEach: mockNoReducedMotion,
 	args: { smoothing: 0 },
 	render: (args) => (
 		<ScrollArea
@@ -239,19 +301,24 @@ export const ReachesEveryStop: Story = {
 		const traveler = canvasElement.querySelector("[data-scroll-travel]")!;
 		const stop2 = await canvas.findByTestId("stop-2");
 		const stop3 = await canvas.findByTestId("stop-3");
-		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
+
+		await waitFor(() =>
+			expect(getTravelTriggers(canvasElement)).toHaveLength(1),
+		);
 
 		const near = (a: DOMRect, b: DOMRect) =>
 			Math.abs(a.left - b.left) < 3 && Math.abs(a.top - b.top) < 3;
 
-		// at the end of the scroll it sits on the last stop
+		// At the end of the scroll it sits on the last stop
 		scroller.scrollTo({ top: scroller.scrollHeight });
+
 		await waitFor(() =>
 			expect(near(rectOf(traveler), rectOf(stop3))).toBe(true),
 		);
 
-		// scrolling back up carries it back to the start
+		// Scrolling back up carries it back to the start
 		scroller.scrollTo({ top: 0 });
+
 		await waitFor(() =>
 			expect(near(rectOf(traveler), rectOf(stop2))).toBe(false),
 		);
@@ -260,6 +327,7 @@ export const ReachesEveryStop: Story = {
 
 export const AcceptsSelectorsAndSkipsEmptyStops: Story = {
 	tags: ["!dev", "!autodocs"],
+	beforeEach: mockNoReducedMotion,
 	render: (args) => (
 		<ScrollArea
 			render={(container) => (
@@ -287,11 +355,17 @@ export const AcceptsSelectorsAndSkipsEmptyStops: Story = {
 		const scroller = await canvas.findByTestId("scroller");
 		const traveler = canvasElement.querySelector("[data-scroll-travel]")!;
 		const stop = await canvas.findByTestId("selector-stop");
-		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
+
+		await waitFor(() =>
+			expect(getTravelTriggers(canvasElement)).toHaveLength(1),
+		);
 
 		scroller.scrollTo({ top: scroller.scrollHeight });
+
 		await waitFor(() =>
-			expect(Math.abs(rectOf(traveler).left - rectOf(stop).left)).toBeLessThan(3),
+			expect(
+				Math.abs(rectOf(traveler).left - rectOf(stop).left),
+			).toBeLessThan(3),
 		);
 	},
 };
@@ -301,9 +375,12 @@ export const NoStopsDoesNothing: Story = {
 	render: (args) => <ScrollTravel {...args} targets={[]} />,
 	play: async ({ canvasElement }) => {
 		await waitFor(() =>
-			expect(canvasElement.querySelector("[data-scroll-travel]")).not.toBeNull(),
+			expect(
+				canvasElement.querySelector("[data-scroll-travel]"),
+			).not.toBeNull(),
 		);
-		await expect(ScrollTrigger.getAll().length).toBe(0);
+
+		await expect(getTravelTriggers(canvasElement)).toHaveLength(0);
 	},
 };
 
@@ -316,21 +393,44 @@ export const ReducedMotionStaysStatic: Story = {
 			expect(element).not.toBeNull();
 			return element as HTMLElement;
 		});
-		await expect(ScrollTrigger.getAll().length).toBe(0);
+
+		await expect(getTravelTriggers(canvasElement)).toHaveLength(0);
 		await expect(traveler.style.transform).toBe("");
 	},
 };
 
 export const RebuildsOnResize: Story = {
 	tags: ["!dev", "!autodocs"],
-	play: async () => {
-		await waitFor(() => expect(ScrollTrigger.getAll().length).toBe(1));
-		const before = ScrollTrigger.getAll()[0];
+	beforeEach: mockNoReducedMotion,
+	render: (args) => <ResizeDemo {...args} />,
+	play: async ({ canvasElement }) => {
+		const traveler = await waitFor(() => {
+			const element = canvasElement.querySelector<HTMLElement>(
+				"[data-scroll-travel]",
+			);
+			expect(element).not.toBeNull();
+			return element!;
+		});
+
+		const anchor = traveler.parentElement!;
+
+		const getTriggers = () =>
+			ScrollTrigger.getAll().filter((trigger) => trigger.trigger === anchor);
+
+		await waitFor(() => expect(getTriggers()).toHaveLength(1));
+
+		const before = getTriggers()[0];
 
 		window.dispatchEvent(new Event("resize"));
-		await waitFor(() => expect(ScrollTrigger.getAll()[0] === before).toBe(false), {
-			timeout: 2000,
-		});
-		await expect(ScrollTrigger.getAll().length).toBe(1);
+
+		await waitFor(
+			() => {
+				const triggers = getTriggers();
+
+				expect(triggers).toHaveLength(1);
+				expect(triggers[0]).not.toBe(before);
+			},
+			{ timeout: 3000 },
+		);
 	},
 };
