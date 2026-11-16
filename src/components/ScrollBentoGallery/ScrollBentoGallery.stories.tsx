@@ -23,7 +23,7 @@ const description = [
 	"**Good to know**",
 	"- Up to 8 images, in a fixed layout. Extra images are ignored. Images are cropped to fit (`object-fit: cover`).",
 	"- Sizes use container units, so the grid fits the `height` you set (`100vh` by default, the full screen). Give it a box with a definite width.",
-	"- The gallery is pinned while the visitor scrolls `scrollDistance` (`\"+=100%\"` is one box height), so it adds that much scroll space. Put content after it, otherwise there is nothing to scroll to.",
+	"- The gallery is pinned while the visitor scrolls `scrollDistance` (`\"+=100%\"` is one scroller height), so it adds that much scroll space. Put content after it, otherwise there is nothing to scroll to.",
 	"- By default it follows the page scroll. Pass `scrollContainer` to follow a scrollable element instead. The examples on this page do that: scroll the box.",
 	"- The animation is rebuilt when the window is resized, not when only the container changes size.",
 	"- With reduced motion enabled, the grid stays static.",
