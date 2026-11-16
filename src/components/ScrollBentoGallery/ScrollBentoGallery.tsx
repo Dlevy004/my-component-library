@@ -84,7 +84,7 @@ export function ScrollBentoGallery({
 			const state = Flip.getState(items);
 			gallery.toggleAttribute("data-final", false);
 
-			const flip = Flip.to(state, { simple: true, ease: "expoScale(1, 5)" });
+			const flip = Flip.to(state, { simple: true, ease: "expo.inOut" });
 
 			gsap
 				.timeline({
