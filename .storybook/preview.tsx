@@ -43,7 +43,8 @@ const preview: Preview = {
                     "Feedback",
                     "Navigation",
                     "Settings",
-                    "Meta"
+                    "Meta",
+                    "Scroll"
                 ]
             ] },
         },
