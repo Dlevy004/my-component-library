@@ -20,7 +20,7 @@ export interface ScrollBentoGalleryProps {
 	readonly images: readonly BentoGalleryImage[];
 	/** Height of the gallery area as a CSS length. The grid is sized to this box */
 	readonly height?: string;
-	/** How far the visitor scrolls during the animation, as a ScrollTrigger end value, e.g. "+=100%" (one box height) or "+=1500" (pixels) */
+	/** How far the visitor scrolls during the animation, as a ScrollTrigger end value, e.g. "+=100%" (one scroller height) or "+=1500" (pixels) */
 	readonly scrollDistance?: string;
 	/** Scrollable element to watch instead of the page, e.g. a panel with overflow-y: auto */
 	readonly scrollContainer?: HTMLElement | null;
