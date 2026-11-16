@@ -409,3 +409,77 @@ export const IgnoresRepeatedClose: Story = {
 		await waitFor(() => expect(isShown(nav)).toBe(false), { timeout: 3000 });
 	},
 };
+
+export const FocusTrap: Story = {
+	tags: ["!dev", "!autodocs"],
+	beforeEach: mockReducedMotion,
+	args: {
+		bottom: (
+			<div>
+				<button type="button">Panel action</button>
+				<input aria-label="Panel search" />
+				<select aria-label="Panel category">
+					<option>One</option>
+				</select>
+				<textarea aria-label="Panel notes" />
+				<div tabIndex={0}>Last focusable</div>
+			</div>
+		),
+	},
+	play: async ({ canvas, canvasElement, userEvent }) => {
+		const outside = document.createElement("button");
+		outside.textContent = "Outside menu";
+		document.body.appendChild(outside);
+
+		try {
+			await userEvent.click(await canvas.findByRole("button", { name: "Open menu" }));
+
+			const toggle = await canvas.findByRole("button", { name: "Close menu" });
+			const nav = canvasElement.querySelector("nav")!;
+			const firstLink = nav.querySelector<HTMLAnchorElement>("a[href]")!;
+			const last = nav.querySelector<HTMLElement>('[tabindex="0"]')!;
+
+			const pressTab = (shiftKey = false) => {
+				const event = new KeyboardEvent("keydown", { key: "Tab", shiftKey, bubbles: true, cancelable: true });
+				document.dispatchEvent(event);
+				return event;
+			};
+
+			// Outside + Tab -> first element
+			outside.focus();
+			const outsideTab = pressTab();
+			await expect(outsideTab.defaultPrevented).toBe(true);
+			await expect(toggle).toHaveFocus();
+
+			// Outside + Shift + Tab -> last element
+			outside.focus();
+			const outsideShiftTab = pressTab(true);
+			await expect(outsideShiftTab.defaultPrevented).toBe(true);
+			await expect(last).toHaveFocus();
+
+			// First element + Shift + Tab -> last element
+			toggle.focus();
+			const firstShiftTab = pressTab(true);
+			await expect(firstShiftTab.defaultPrevented).toBe(true);
+			await expect(last).toHaveFocus();
+
+			// Last element + Tab -> first element
+			last.focus();
+			const lastTab = pressTab();
+			await expect(lastTab.defaultPrevented).toBe(true);
+			await expect(toggle).toHaveFocus();
+
+			// Middle element + Tab -> default browser behavior
+			firstLink.focus();
+			const middleTab = pressTab();
+			await expect(middleTab.defaultPrevented).toBe(false);
+
+			// Middle element + Shift + Tab -> default browser behavior
+			firstLink.focus();
+			const middleShiftTab = pressTab(true);
+			await expect(middleShiftTab.defaultPrevented).toBe(false);
+		} finally {
+			outside.remove();
+		}
+	},
+};
