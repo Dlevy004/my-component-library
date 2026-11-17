@@ -120,8 +120,12 @@ export function LoginForm({
 		setSubmitError("");
 		setSubmitting(true);
 
-		try {
-			await onSubmit({ email, password, rememberMe });
+        try {
+			await onSubmit({
+				email,
+				password,
+				rememberMe: showRememberMe && rememberMe,
+			});
 		} catch (caught) {
 			setSubmitError(caught instanceof Error ? caught.message : fallbackError);
 		} finally {
