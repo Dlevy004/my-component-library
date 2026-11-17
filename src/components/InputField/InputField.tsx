@@ -115,6 +115,7 @@ export function InputField({
 		field = (
 			<Select<InputFieldOption>
 				unstyled
+                instanceId={inputId}
 				inputId={inputId}
 				name={name}
 				options={options}
