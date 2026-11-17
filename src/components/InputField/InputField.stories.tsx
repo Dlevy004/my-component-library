@@ -376,7 +376,7 @@ export const DisabledDropdown: Story = {
 	args: { ...dropdownArgs, disabled: true },
 	play: async ({ canvas }) => {
 		await expect(
-			await canvas.findByRole("combobox", { name: "Client type" }),
+			await canvas.findByLabelText("Client type"),
 		).toBeDisabled();
 	},
 };
