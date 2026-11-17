@@ -55,7 +55,7 @@ export interface InputFieldProps {
 	readonly accentColor?: string;
 	/** Accent color in dark mode. The selected text is dark, so pick a light color */
 	readonly accentColorDark?: string;
-	/** Extra classes for the whole field, e.g. to limit the width */
+	/** Extra classes for the whole field, e.g. to limit its width */
 	readonly className?: string;
 }
 
