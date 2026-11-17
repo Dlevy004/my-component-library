@@ -52,19 +52,28 @@ export function LoginPage() {
 	);
 }`;
 
-const botProtectionSnippet = `import { useState } from "react";
-import { Turnstile } from "@marsidev/react-turnstile";
+const botProtectionSnippet = `import { useRef, useState } from "react";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import { LoginForm } from "./components/LoginForm/LoginForm";
 
 export function LoginPage() {
 	const [token, setToken] = useState("");
+	const turnstileRef = useRef<TurnstileInstance>(null);
 
 	return (
 		<LoginForm
 			submitDisabled={!token}
-			onSubmit={(values) => login({ ...values, turnstileToken: token })}
+			onSubmit={async (values) => {
+				try {
+					await login({ ...values, turnstileToken: token });
+				} finally {
+					setToken("");
+					turnstileRef.current?.reset();
+				}
+			}}
 		>
 			<Turnstile
+				ref={turnstileRef}
 				siteKey={import.meta.env.VITE_TURNSTILE_SITE_KEY}
 				onSuccess={setToken}
 			/>
