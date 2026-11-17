@@ -128,6 +128,7 @@ export function InputField({
 				noOptionsMessage={() => noOptionsText}
 				aria-invalid={invalid}
 				aria-errormessage={describedBy}
+				aria-label={label}
 				classNames={{
 					container: () => "w-full",
 					control: ({ isFocused }) =>
