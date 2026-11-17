@@ -331,7 +331,7 @@ export const DropdownKeyboard: Story = {
 
 export const DropdownWithoutMatch: Story = {
 	tags: ["!dev", "!autodocs"],
-	args: { ...dropdownArgs, value: "missing" },
+	args: { ...dropdownArgs, value: "missing", placeholder: "Select..." },
 	play: async ({ canvas }) => {
 		// a value that matches no option shows the placeholder
 		await expect(await canvas.findByText("Select...")).toBeInTheDocument();
