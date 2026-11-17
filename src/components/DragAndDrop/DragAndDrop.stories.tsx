@@ -33,19 +33,24 @@ const description = [
 
 const usageImport = `import { DragAndDrop } from "./components/DragAndDrop/DragAndDrop";`;
 
-const usageSnippet = `import { useState } from "react";
+const usageSnippet = `import { useEffect, useState } from "react";
 import { DragAndDrop } from "./components/DragAndDrop/DragAndDrop";
 
 export function AvatarUpload() {
 	const [previewUrl, setPreviewUrl] = useState<string>();
 	const [error, setError] = useState<string>();
 
+	useEffect(() => {
+		return () => {
+			if (previewUrl) URL.revokeObjectURL(previewUrl);
+		};
+	}, [previewUrl]);
+
 	return (
 		<DragAndDrop
 			previewUrl={previewUrl}
 			error={error}
 			onFileSelect={(file) => {
-				if (previewUrl) URL.revokeObjectURL(previewUrl);
 				setPreviewUrl(URL.createObjectURL(file));
 				setError(undefined);
 			}}
