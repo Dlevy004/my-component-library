@@ -101,7 +101,7 @@ export function SegmentedControl({
 							tabIndex={index === tabStop ? 0 : -1}
 							onClick={() => choose(index)}
 							onKeyDown={(event) => handleKeyDown(event, index)}
-							className={`relative z-10 h-full flex-1 cursor-pointer rounded-lg border-none bg-transparent font-bold transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--seg-accent) motion-reduce:transition-none dark:focus-visible:outline-(--seg-accent-dark) ${
+                            className={`relative z-10 h-full min-w-0 flex-1 cursor-pointer truncate rounded-lg border-none bg-transparent px-2 font-bold transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--seg-accent) motion-reduce:transition-none dark:focus-visible:outline-(--seg-accent-dark) ${
 								checked
 									? "text-white dark:text-neutral-900"
 									: "text-neutral-900 dark:text-neutral-100"
