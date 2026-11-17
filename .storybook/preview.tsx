@@ -44,6 +44,7 @@ const preview: Preview = {
                     "Navigation",
                     "Settings",
                     "Meta",
+                    "Forms",
                     "Scroll"
                 ]
             ] },
